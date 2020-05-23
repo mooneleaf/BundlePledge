@@ -1,6 +1,9 @@
 name: Build Catarse.js
 on: 
-  pull_request:
+  push:
+    paths:
+      - 'services/catarse.js/**'
+      - '.github/workflows/build-catarse-js.yaml'
     branches:
     - develop
 jobs:
