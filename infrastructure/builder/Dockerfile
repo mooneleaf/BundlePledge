@@ -19,7 +19,7 @@ ENV SKAFFOLD_URL https://storage.googleapis.com/skaffold/releases/${SKAFFOLD_VER
 RUN wget -O skaffold "${SKAFFOLD_URL}"
 RUN chmod +x skaffold
 
-FROM node:12
+FROM node:10
 
 ENV DOCKER_CONFIG=/builder/home/.docker
 
