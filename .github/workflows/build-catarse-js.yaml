@@ -1,0 +1,26 @@
+name: Build Catarse.js
+on: 
+  pull_request:
+    branches:
+    - develop
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container: soapbubble/aws-cloud-builder:fa358872718fc7a11987b75a72019f10f1dfeb07
+    steps:    
+    - name: Checkout
+      uses: actions/checkout@v2 
+    - name: Init NPM
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+        registry-url: 'https://npm.pkg.github.com'
+    - name: Build
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: |
+        cd services/catarse.js
+        npm i
+        npm run build
+        npm publish

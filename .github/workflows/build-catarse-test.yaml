@@ -25,6 +25,10 @@ jobs:
       with:
         node-version: '12.x'
         registry-url: 'https://npm.pkg.github.com'
+    - name: Decrypt
+      run: |
+        sops -d infrastructure/kustomize/overlays/test-run/catarse-secrets.yaml > infrastructure/kustomize/overlays/test-run/catarse-secrets-dec.yaml
+        sops -d services/service-core-db/setup_fdw_grants.sql.enc > services/service-core-db/setup_fdw_grants.sql
     - name: Build
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
