@@ -1,4 +1,4 @@
-name: Build test environment
+name: Build Catarse for test environment
 on: 
   pull_request:
     branches:
@@ -7,7 +7,7 @@ jobs:
   build:
     name: Build the builder
     runs-on: ubuntu-latest
-    container: soapbubble/aws-cloud-builder
+    container: soapbubble/aws-cloud-builder:fa358872718fc7a11987b75a72019f10f1dfeb07
     steps:    
     - name: Checkout
       uses: actions/checkout@v2 
