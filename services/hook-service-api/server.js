@@ -5,6 +5,7 @@ const pagarme = require('pagarme');
 const R = require('ramda');
 const {Pool} = require('pg');
 const Raven = require('raven');
+const crypto = require('crypto');
 
 if(process.env.SENTRY_DSN) {
     Raven.config(process.env.SENTRY_DSN).install();
@@ -33,6 +34,14 @@ const pool = new Pool({
     statement_timeout: (process.env.STATEMENT_TIMEOUT || 5000)
 });
 
+const verifyKondutoSignature = (req) => {
+    const kondutoSecret = process.env.ANTIFRAUD_API_KEY
+    const string = `${req.body.order_id}#${req.body.timestamp}#${req.body.status}`
+    const hash = crypto.createHmac('sha256', kondutoSecret).update(string).digest('hex')
+
+    return hash === req.body.signature
+}
+
 const server = express();
 
 server.use(bodyParser.json({
@@ -52,6 +61,30 @@ server.get('/', (req, res) => {
     res.send("hooks :D");
 });
 
+server.post('/webhooks/konduto', async (req, resp) => {
+    try {
+        if (verifyKondutoSignature(req)) {
+            console.log('received valid koduto postback ', req.body);
+
+            let client = await pagarme.client.connect({ api_key: process.env.GATEWAY_API_KEY });
+
+            if (req.body.status === 'APPROVED') {
+                await client.withVersion('2019-09-01').transactions.capture({ id: req.body.order_id })
+            } else if (req.body.status === 'DECLINED') {
+                await client.withVersion('2019-09-01').transactions.refund({ id: req.body.order_id })
+            }
+
+            resp.setHeader('Content-Type', 'application/json')
+            resp.status(200).send(JSON.stringify({ status: 'ok' }));
+        } else {
+            resp.status(400).send("invalid signature");
+        }
+    } catch (err) {
+        raven_report(err, {});
+        console.log('Error on konduto webhook processing ', err);
+    }
+})
+
 server.post('/postbacks/:gateway_name', async (req, resp) => {
     if(req.params.gateway_name === 'pagarme') {
         try {
@@ -61,7 +94,7 @@ server.post('/postbacks/:gateway_name', async (req, resp) => {
 
             // check if postback is from gateway
             if(gateway_client.security.verify(req.rawBody, req.headers['x-hub-signature'].split('=')[1])) {
-                console.log('received valid postback ', req.body);
+                console.log('received valid pagarme postback ', req.body);
 
                 // fetch payment and user data to build context
                 const res = await pool.query(
@@ -98,11 +131,15 @@ server.post('/postbacks/:gateway_name', async (req, resp) => {
                 const subscription = res.rows[0].subscription_data;
                 const last_payment = res.rows[0].last_payment_data;
 
+                if (req.body.old_status === 'authorized' && req.body.current_status === 'refunded') {
+                    req.body.current_status = 'refused'
+                }
+
                 const current_status = req.body.current_status;
                 const transaction = req.body.transaction;
 
                 // transaction payment to status
-                if (!['processing', 'waiting_payment', 'pending_review','pending_refund'].includes(current_status)) {
+                if (!['authorized',  'processing', 'waiting_payment', 'pending_review','pending_refund'].includes(current_status)) {
 
                 const payables = await gateway_client.
                     payables.find({ transactionId: transaction.id});

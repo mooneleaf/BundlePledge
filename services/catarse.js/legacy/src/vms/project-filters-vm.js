@@ -1,10 +1,13 @@
-import m from 'mithril';
 import _ from 'underscore';
 import moment from 'moment';
 import { catarse } from '../api';
 
 const projectFiltersVM = () => {
     const filtersVM = catarse.filtersVM,
+        covid19 = filtersVM({
+            integrations: 'like',
+        }).integrations('COVID-19'),
+
         all = filtersVM({
             state: 'eq'
         }).state('online'),
@@ -41,9 +44,10 @@ const projectFiltersVM = () => {
             open_for_contributions: 'eq'
         }).open_for_contributions('true'),
 
-        recommended = filtersVM({
-            open_for_contributions: 'eq'
-        }).open_for_contributions('true'),
+        saved_projects = filtersVM({
+            open_for_contributions: 'eq',
+            saved_projects: 'eq'
+        }).open_for_contributions('true').saved_projects(true),
 
         contributed_by_friends = filtersVM({
             open_for_contributions: 'eq',
@@ -56,7 +60,33 @@ const projectFiltersVM = () => {
 
         finished = filtersVM({}),
 
+        projects_we_love = filtersVM({
+            recommended: 'eq'
+        }).recommended(true),
+
+        projects_we_love_not_sub = filtersVM({
+            recommended: 'eq',
+            mode: 'not.eq'
+        }).recommended(true).mode('sub'),
+        
         filters = {
+            projects_we_love_not_sub: {
+                title: 'Projetos que amamos',
+                filter: projects_we_love_not_sub,
+                mode: 'not_sub',
+                nicename: 'Projetos que amamos',
+                isContextual: false,
+                keyName: 'projects_we_love',
+                header_badges: ['badge-aon-h-margin', 'badge-flex-h-margin']
+            },
+            projects_we_love: {
+                title: 'Projetos que amamos',
+                filter: projects_we_love,
+                nicename: 'Projetos que amamos',
+                isContextual: false,
+                keyName: 'projects_we_love',
+                header_badges: ['badge-aon-h-margin', 'badge-flex-h-margin']
+            },
             all: {
                 title: 'Todas as Categorias',
                 filter: all,
@@ -64,20 +94,25 @@ const projectFiltersVM = () => {
                 isContextual: false,
                 keyName: 'all'
             },
-            //recommended_1: {
-            //    title: 'Recomendados para você',
-            //    filter: recommended,
-            //    nicename: 'Recomendados para você',
-            //    isContextual: false,
-            //    keyName: 'recommended_1'
-            //},
-            //recommended_2: {
-            //    title: 'Recomendados para você',
-            //    filter: recommended,
-            //    nicename: 'Recomendados para você',
-            //    isContextual: false,
-            //    keyName: 'recommended_2'
-            //},
+            covid_19: {
+                title: 'Projetos COVID-19',
+                filter: covid19,
+                mode: 'covid_19',
+                nicename: 'Projetos COVID-19',
+                isContextual: false,
+                keyName: 'covid_19',
+                query: {
+                    mode: 'covid_19',
+                    filter: 'all'
+                }
+            },
+            saved_projects: {
+                title: 'Projetos Salvos',
+                filter: saved_projects,
+                nicename: 'Projetos Salvos',
+                isContextual: false,
+                keyName: 'saved_projects'
+            },
             contributed_by_friends: {
                 title: 'Amigos',
                 filter: contributed_by_friends,
@@ -136,7 +171,9 @@ const projectFiltersVM = () => {
             },
             all_modes: {
                 title: 'Todos os projetos',
-                filter: null,
+                filter: {
+                    parameters: () => ({})
+                },
                 isContextual: false,
                 keyName: 'all_modes'
             },
@@ -144,6 +181,7 @@ const projectFiltersVM = () => {
                 title: 'Assinaturas',
                 nicename: 'Assinaturas',
                 filter: sub,
+                mode: 'sub',
                 isContextual: false,
                 keyName: 'sub',
                 header_badges: ['badge-sub-h-margin']

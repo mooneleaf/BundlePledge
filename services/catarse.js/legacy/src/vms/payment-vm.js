@@ -245,19 +245,6 @@ const paymentVM = () => {
         });
     };
 
-    const similityExecute = (contribution_id) => {
-        if (window.SimilityScript && h.getSimilityCustomer()) {
-            const user = h.getUser() || {};
-            const similityContext = {
-                customer_id: h.getSimilityCustomer(),
-                session_id: contribution_id,
-                user_id: user.user_id
-            };
-            const ss = new window.SimilityScript(similityContext);
-            ss.execute();
-        }
-    };
-
     const kondutoExecute = function () {
         const customerID = h.getUserID();
 
@@ -265,7 +252,7 @@ const paymentVM = () => {
             var period = 300;
             var limit = 20 * 1e3;
             var nTry = 0;
-            var intervalID = setInterval(function () {     
+            var intervalID = setInterval(function () {
                 var clear = limit / period <= ++nTry;
                 if ((typeof (Konduto) !== "undefined") && (typeof (Konduto.setCustomerID) !== "undefined")) {
                     window.Konduto.setCustomerID(customerID);
@@ -299,16 +286,6 @@ const paymentVM = () => {
         return requestPayment(data, contribution_id);
     };
 
-    const setNewCreditCard = () => {
-        const creditCard = new window.PagarMe.creditCard();
-        creditCard.cardHolderName = creditCardFields.name();
-        creditCard.cardExpirationMonth = creditCardFields.expMonth();
-        creditCard.cardExpirationYear = creditCardFields.expYear();
-        creditCard.cardNumber = creditCardFields.number();
-        creditCard.cardCVV = creditCardFields.cvv();
-        return creditCard;
-    };
-
     const payWithNewCard = (contribution_id, installment) => {
         const p = new Promise((resolve, reject) => {
             m.request({
@@ -316,13 +293,12 @@ const paymentVM = () => {
                 url: `/payment/pagarme/${contribution_id}/get_encryption_key`,
                 config: setCsrfToken
             }).then((data) => {
-                window.PagarMe.encryption_key = data.key;
-                const card = setNewCreditCard();
-                const errors = card.fieldErrors();
-                if (_.keys(errors).length > 0) {
-                    reject({ message: window.I18n.t('submission.card_invalid', scope()) });
-                } else {
-                    card.generateHash((cardHash) => {
+                const encryptionKey = data.key;
+                const card = h.buildCreditCard(creditCardFields);
+
+                window.pagarme.client.connect({ encryption_key: encryptionKey })
+                    .then(client => client.security.encrypt(card))
+                    .then((cardHash) => {
                         const data = {
                             card_hash: cardHash,
                             save_card: creditCardFields.save().toString(),
@@ -332,8 +308,11 @@ const paymentVM = () => {
                         requestPayment(data, contribution_id)
                             .then(resolve)
                             .catch(reject);
+                    })
+                    .catch((error) => {
+                        h.captureException(error);
+                        reject({ message: window.I18n.t('submission.card_invalid', scope()) })
                     });
-                }
             }).catch((error) => {
                 h.captureException(error);
                 if (!_.isEmpty(error.message)) {
@@ -461,7 +440,6 @@ const paymentVM = () => {
         pagarme,
         locale: getLocale,
         faq,
-        similityExecute,
         kondutoExecute
     };
 };

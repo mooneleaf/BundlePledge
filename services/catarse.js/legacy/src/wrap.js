@@ -1,3 +1,4 @@
+/** global CatarseAnalytics */
 import m from 'mithril';
 import _ from 'underscore';
 import h from './h';
@@ -6,7 +7,7 @@ import c from './c';
 let app = document.getElementById('application');
 let body = document.body;
 
-const wrap = function (component, customAttr) {
+export function wrap(component, customAttr) {
     if (!app) {
         app = document.getElementById('application');
     }
@@ -117,8 +118,4 @@ const wrap = function (component, customAttr) {
             }
         }
     };
-};
-
-module.exports = {
-    wrap
 }

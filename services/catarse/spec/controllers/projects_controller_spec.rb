@@ -36,7 +36,7 @@ RSpec.describe ProjectsController, type: :controller do
   end
 
   describe 'GET push_to_online' do
-    let(:project) { create(:project, state: 'draft') }
+    let(:project) { create(:project, state: 'draft', content_rating: 1) }
     let(:current_user) { project.user }
 
     before do
@@ -59,7 +59,7 @@ RSpec.describe ProjectsController, type: :controller do
   end
 
   describe 'GET push_to_online banned document' do
-    let(:project) { create(:project, state: 'draft') }
+    let(:project) { create(:project, state: 'draft', content_rating: 1) }
     let(:current_user) { project.user }
     let(:blacklist_document) { create(:blacklist_document, number: "123.456.789-01")}
     
@@ -117,7 +117,7 @@ RSpec.describe ProjectsController, type: :controller do
   describe 'PUT update' do
     shared_examples_for 'updatable project' do
       context 'with tab anchor' do
-        before { put :update, id: project.id, project: { name: 'My Updated Title' }, locale: :pt, anchor: 'basics' }
+        before { put :update, id: project.id, project: { name: 'My Updated Title', content_rating: 1 }, locale: :pt, anchor: 'basics' }
 
         it { is_expected.to redirect_to edit_project_path(project, anchor: 'basics') }
       end
@@ -131,10 +131,41 @@ RSpec.describe ProjectsController, type: :controller do
 
         it { is_expected.to redirect_to edit_project_path(project, anchor: 'home') }
       end
+
+      context 'with content rating equal to 18' do
+        before { put :update, id: project.id, project: { name: 'My Updated Title', content_rating: 18 }, locale: :pt }
+        it {
+          project.reload
+          expect(project.content_rating).to eq(18)
+          expect(project.all_tags).to include(I18n.t('project.adult_content_admin_tag'))
+        }
+
+        it { is_expected.to redirect_to edit_project_path(project, anchor: 'home') }
+      end
+
+      context 'with content rating less than 18' do
+        before { put :update, id: project.id, project: { name: 'My Updated Title', content_rating: 1 }, locale: :pt }
+        it {
+          project.reload
+          expect(project.content_rating).to eq(1)
+          expect(project.all_tags).not_to include(I18n.t('project.adult_content_admin_tag'))
+        }
+
+        it { is_expected.to redirect_to edit_project_path(project, anchor: 'home') }
+      end
+
+      context 'with content rating to a not included number' do
+        before { put :update, id: project.id, project: { name: 'My Updated Title', content_rating: 0}, locale: :pt }
+
+        it {
+          project.reload
+          expect(project.content_rating).to eq(0)
+        }
+      end
     end
 
     shared_examples_for 'protected project' do
-      before { put :update, id: project.id, project: { name: 'My Updated Title' }, locale: :pt }
+      before { put :update, id: project.id, project: { name: 'My Updated Title', content_rating: 1 }, locale: :pt }
       it {
         project.reload
         expect(project.name).to eq('Foo bar')
@@ -165,13 +196,23 @@ RSpec.describe ProjectsController, type: :controller do
             expect_any_instance_of(Project).to receive(:update_columns).with(
             expires_at: DateTime.now).and_call_original
 
-            put :update, id: project.id, cancel_project: 'true', project: { posts_attributes: {"0" => { title: "cancelamento de teste", comment_html: "<p>apenas um teste no cancelamento</p>" }}}, locale: :pt
+            put :update, id: project.id, cancel_project: 'true', project: { content_rating: 1, posts_attributes: {"0" => { title: "cancelamento de teste", comment_html: "<p>apenas um teste no cancelamento</p>" }}}, locale: :pt
             project.reload
           end
 
           it "should generate a project cancelation order" do
             expect(project.project_cancelation.present?).to eq(true)
           end
+        end
+
+        context 'with content rating change' do
+          before { put :update, id: project.id, project: { name: 'My Updated Title', content_rating: 18 }, locale: :pt }
+          it {
+            project.reload
+            expect(project.content_rating).to eq(1)
+          }
+  
+          it { is_expected.to redirect_to edit_project_path(project, anchor: 'home') }
         end
 
         context 'when I try to update the project name and the about_html field' do
@@ -183,7 +224,7 @@ RSpec.describe ProjectsController, type: :controller do
         end
 
         context 'when I try to update only the about_html field' do
-          before { put :update, id: project.id, project: { about_html: 'new_description' }, locale: :pt }
+          before { put :update, id: project.id, project: { about_html: 'new_description', content_rating: 1 }, locale: :pt }
           it 'should update it' do
             project.reload
             expect(project.about_html).to eq('new_description')
@@ -236,4 +277,332 @@ RSpec.describe ProjectsController, type: :controller do
       its(:body) { should == nil.to_json }
     end
   end
+
+  describe 'Solidarity project' do
+    let(:integrations_attributes) { [{ name: 'SOLIDARITY_SERVICE_FEE', data: { name: 'SOLIDARITY FEE NAME' } }] }
+    
+    context 'when create solidarity project with service fee 4%' do 
+      let(:user) { create(:user, admin: false) }
+      let(:category) { create(:category) }
+      let!(:project) { build(:project, service_fee: 0.04, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+
+        post :create, {
+          locale: :pt,
+          project: {
+            name: "NEW PROJECT NAME",
+            service_fee: 0.04,
+            mode: 'flex',
+            category_id: category.id,
+            integrations_attributes: integrations_attributes
+          }
+        }
+        
+      end
+  
+      it 'should set service fee' do
+        expect(Project.last.service_fee).to eq 0.04
+      end
+
+      it { is_expected.to redirect_to insights_project_path(Project.last, locale: '') }
+
+      its(:status) { should == 302 }
+    end
+
+    context 'when try to create solidarity project with service fee under 4%' do 
+      let(:user) { create(:user, admin: false) }
+      let(:category) { create(:category) }
+      let!(:project) { build(:project, service_fee: 0.04, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+
+        post :create, {
+          locale: :pt,
+          project: {
+            name: "NEW PROJECT NAME",
+            service_fee: 0.03,
+            mode: 'flex',
+            category_id: category.id,
+            integrations_attributes: integrations_attributes
+          }
+        }
+        
+      end
+  
+      it 'should set service fee to 13%' do
+        expect(Project.last.service_fee).to eq 0.13
+      end
+
+      it { is_expected.to redirect_to insights_project_path(Project.last, locale: '') }
+
+      its(:status) { should == 302 }
+    end
+
+    context 'when try to create solidarity project with service fee over 20%' do 
+      let(:user) { create(:user, admin: false) }
+      let(:category) { create(:category) }
+      let!(:project) { build(:project, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+
+        post :create, {
+          locale: :pt,
+          project: {
+            name: "NEW PROJECT NAME",
+            service_fee: 0.25,
+            mode: 'flex',
+            category_id: category.id,
+            integrations_attributes: integrations_attributes
+          }
+        }
+        
+      end
+  
+      it 'should set service fee to 13%' do
+        expect(Project.last.service_fee).to eq 0.13
+      end
+
+      it { is_expected.to redirect_to insights_project_path(Project.last, locale: '') }
+
+      its(:status) { should == 302 }
+    end
+
+    context 'when try to create solidarity project with service fee nil' do 
+      let(:user) { create(:user, admin: false) }
+      let(:category) { create(:category) }
+      let!(:project) { build(:project, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+
+        post :create, {
+          locale: :pt,
+          project: {
+            name: "NEW PROJECT NAME",
+            service_fee: nil,
+            mode: 'flex',
+            category_id: category.id,
+            integrations_attributes: integrations_attributes
+          }
+        }
+        
+      end
+  
+      it 'should set service fee to 13%' do
+        expect(Project.last.service_fee).to eq 0.13
+      end
+
+      it { is_expected.to redirect_to insights_project_path(Project.last, locale: '') }
+
+      its(:status) { should == 302 }
+    end
+
+    context 'when try to update solidarity project with service fee nil' do 
+      let(:user) { create(:user, admin: false) }
+      let!(:project) { create(:project, user: user, integrations_attributes: integrations_attributes, service_fee: 0.04, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+        
+        put :update, id: project.id, format: :json, project: { 
+          tracker_snippet_html: "",
+          user_id: user.id,
+          all_tags: "",
+          all_public_tags: "",
+          service_fee: nil,
+          name: "NEW PROJECT NAME",
+          content_rating:0,
+          permalink: "permalink_url_3128793819732",
+        }
+        
+      end
+  
+      it 'should update project and previously assigned service fee' do
+        expect(project.service_fee).to eq 0.04 
+      end
+
+      its(:status) { should == 200 }
+      its(:body) { should == { success: 'OK' }.to_json }
+    end
+
+    context 'when try to update solidarity project service fee over 4% but under 20%' do 
+      let(:user) { create(:user, admin: false) }
+      let!(:project) { create(:project, user: user, integrations_attributes: integrations_attributes, service_fee: 0.04, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+        
+        put :update, id: project.id, format: :json, project: { 
+          tracker_snippet_html: "",
+          user_id: user.id,
+          all_tags: "",
+          all_public_tags: "",
+          service_fee: 0.05,
+          name: "NEW PROJECT NAME",
+          content_rating:0,
+          permalink: "permalink_url_3128793819732",
+        }
+        
+      end
+  
+      it 'should update project and previously assigned service fee' do
+        project.reload
+        expect(project.service_fee).to eq 0.05
+      end
+
+      its(:status) { should == 200 }
+      its(:body) { should == { success: 'OK' }.to_json }
+    end
+
+    context 'when try to update solidarity project service fee under 4%' do 
+      let(:user) { create(:user, admin: false) }
+      let!(:project) { create(:project, user: user, integrations_attributes: integrations_attributes, service_fee: 0.04, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+        
+        put :update, id: project.id, format: :json, project: { 
+          tracker_snippet_html: "",
+          user_id: user.id,
+          all_tags: "",
+          all_public_tags: "",
+          service_fee: 0.03,
+          name: "NEW PROJECT NAME",
+          content_rating:0,
+          permalink: "permalink_url_3128793819732",
+        }
+        
+      end
+  
+      it 'should update project and previously assigned service fee' do
+        project.reload
+        expect(project.service_fee).to eq 0.04
+      end
+
+      its(:status) { should == 200 }
+      its(:body) { should == { success: 'OK' }.to_json }
+    end
+
+
+    context 'when try update solidarity project with service fee over 20%' do 
+      let(:user) { create(:user, admin: false) }
+      let!(:project) { create(:project, user: user, integrations_attributes: integrations_attributes, service_fee: 0.04, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+        
+        put :update, id: project.id, format: :json, project: { 
+          tracker_snippet_html: "",
+          user_id: user.id,
+          all_tags: "",
+          all_public_tags: "",
+          service_fee: 0.25,
+          name: "NEW PROJECT NAME",
+          content_rating:0,
+          permalink: "permalink_url_3128793819732",
+        }
+        
+      end
+  
+      it 'should update project and previously assigned service fee' do
+        project.reload
+        expect(project.service_fee).to eq 0.04
+      end
+
+      its(:status) { should == 200 }
+      its(:body) { should == { success: 'OK' }.to_json }
+    end
+
+    context 'when try update solidarity project with service fee nil' do 
+      let(:user) { create(:user, admin: false) }
+      let!(:project) { create(:project, user: user, integrations_attributes: integrations_attributes, service_fee: 0.04, state: 'draft') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+        
+        put :update, id: project.id, format: :json, project: { 
+          tracker_snippet_html: "",
+          user_id: user.id,
+          all_tags: "",
+          all_public_tags: "",
+          service_fee: nil,
+          name: "NEW PROJECT NAME",
+          content_rating:0,
+          permalink: "permalink_url_3128793819732",
+        }
+        
+      end
+  
+      it 'should update project and previously assigned service fee' do
+        project.reload
+        expect(project.service_fee).to eq 0.04
+      end
+
+      its(:status) { should == 200 }
+      its(:body) { should == { success: 'OK' }.to_json }
+    end
+
+    context 'when solidarity project is online service fee cannot be changed by owner' do 
+      let(:user) { create(:user, admin: false) }
+      let!(:project) { create(:project, user: user, integrations_attributes: integrations_attributes, service_fee: 0.04, state: 'online') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+        
+        put :update, id: project.id, format: :json, project: { 
+          tracker_snippet_html: "",
+          user_id: user.id,
+          all_tags: "",
+          all_public_tags: "",
+          service_fee: 0.05,
+          name: "NEW PROJECT NAME",
+          content_rating:0,
+          permalink: "permalink_url_3128793819732",
+        }
+        
+      end
+  
+      it 'should update project and previously assigned service fee' do
+        project.reload
+        expect(project.service_fee).to eq 0.04
+      end
+
+      its(:status) { should == 200 }
+      its(:body) { should == { success: 'OK' }.to_json }
+    end
+
+    context 'when solidarity project is online service fee can only be changed by an admin' do 
+      let(:user) { create(:user, admin: true) }
+      let!(:project) { create(:project, user: user, integrations_attributes: integrations_attributes, service_fee: 0.04, state: 'online') }
+  
+      before do
+        allow(controller).to receive(:current_user).and_return(user)
+        
+        put :update, id: project.id, format: :json, project: { 
+          tracker_snippet_html: "",
+          user_id: user.id,
+          all_tags: "",
+          all_public_tags: "",
+          service_fee: 0.05,
+          name: "NEW PROJECT NAME",
+          permalink: "permalink_url_3128793819732",
+        }
+        
+      end
+  
+      it 'should update project and previously assigned service fee' do
+        project.reload
+        expect(project.service_fee).to eq 0.05
+      end
+
+      its(:status) { should == 200 }
+      its(:body) { should == { success: 'OK' }.to_json }
+    end
+
+  end
+
 end

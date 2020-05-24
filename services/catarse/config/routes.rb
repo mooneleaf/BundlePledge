@@ -53,6 +53,8 @@ Catarse::Application.routes.draw do
     # mount CatarseWepay::Engine => "/", as: :catarse_wepay
     mount Dbhero::Engine => '/dbhero', as: :dbhero
 
+    resources :home_banners, path: '/home_banners', controller: 'home/banners'
+
     resources :categories, only: [] do
       member do
         get :subscribe, to: 'categories/subscriptions#create'
@@ -118,6 +120,8 @@ Catarse::Application.routes.draw do
         put :credits_checkout, on: :member
       end
 
+      resources :integrations, { only: [:index, :create, :update], controller: 'projects/integrations' }
+
       collection do
         get :fallback_create, to: 'projects#create'
       end
@@ -172,6 +176,7 @@ Catarse::Application.routes.draw do
     get '/privacy-policy' => redirect('https://crowdfunding.catarse.me/legal/politica-de-privacidade')
     get '/start' => redirect('https://crowdfunding.catarse.me/comece')
     get '/start-sub' => redirect('https://crowdfunding.catarse.me/comece')
+    get '/solidaria' => redirect('https://crowdfunding.catarse.me/solidaria')
     get '/jobs' => 'high_voltage/pages#show', id: 'jobs'
     get '/hello' => redirect('/start')
     get '/press' => redirect('https://crowdfunding.catarse.me/imprensa')

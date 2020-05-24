@@ -16,9 +16,9 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.[jt]sx?$/,
                 exclude: /node_modules/,
-                          use: [
+                use: [
                     {
                         loader: 'babel-loader',
                         options: {
@@ -31,7 +31,35 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.css$/,
+                exclude: /node_modules/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                exclude: /node_modules/,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    'style-loader',
+                    // Translates CSS into CommonJS
+                    'css-loader',
+                    {
+                        // Compiles Sass to CSS
+                        loader: 'sass-loader',
+                        options: {
+                            sassOptions: {
+                                indentWidth: 4,
+                                includePaths: ['../../stylesheets/catarse_bootstrap/'],
+                            },
+                        },
+                    }
+                ],
+            },
         ],
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.jsx', '.js'],
     },
     devServer: {
         contentBase: './dist',

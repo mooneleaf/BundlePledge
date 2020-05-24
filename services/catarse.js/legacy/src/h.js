@@ -5,7 +5,7 @@ import m from 'mithril';
 import prop from 'mithril/stream';
 import { catarse } from './api';
 import contributionVM from './vms/contribution-vm';
-import generativeTrust from 'mithril-generative-trust/src/index';
+import generativeTrust from './../vendor/mithril-generative-trust';
 
 function getCallStack() {
     const callStackStr = new Error().stack;
@@ -39,11 +39,19 @@ function RedrawScheduler() {
         if (redrawsRequestCounter > 0) {
             /// #if DEBUG
             const callStack = markedCallStack[redrawsRequestCounter];
+            try {
             /// #endif
 
-            if (redrawsRequestCounter === 1) {
-                m.redraw();
+                if (redrawsRequestCounter === 1) {
+                    m.redraw();
+                }
+
+            /// #if DEBUG
+            } catch(e) {
+                console.log('redraw error:', e);
+                console.log('callstack', callStack);
             }
+            /// #endif
 
             redrawsRequestCounter = Math.max(0, --redrawsRequestCounter);
         }
@@ -81,6 +89,103 @@ const _dataCache = {},
             regex = new RegExp(`[\\?&]${normalName}=([^&#]*)`),
             results = regex.exec(location.search);
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    },
+    reduceSearchString = (/** @type {(keyValue:string) => any} */callback, initial) => window.location.search.replace('?', '').split('&').reduce(callback, initial),
+    objectToSearchString = (obj) => '?' + Object.keys(obj).map(key => `${key}=${obj[key]}`).join('&'),
+    setParamByName = (name, value) => {        
+        const keysAndValues = reduceSearchString((finalQueryObject, keyValue) => {
+            const [key, value] = keyValue.split('=');
+            if (key) {
+                finalQueryObject[key] = value;
+            }
+            return finalQueryObject;
+        }, {});
+
+        keysAndValues[name] = value;
+
+        const queryString = objectToSearchString(keysAndValues);
+
+        const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString + (window.location.hash === '#' ? '' : window.location.hash);
+        m.route.set(newurl);
+    },
+    setMultParams = (/** @type {{[key : string] : string}} */ objectParams) => {
+        const keysAndValues = reduceSearchString((finalQueryObject, keyValue) => {
+            const [key, value] = keyValue.split('=');
+            if (key) {
+                finalQueryObject[key] = value;
+            }
+            return finalQueryObject;
+        }, {});
+
+        const queryString = objectToSearchString(Object.assign(keysAndValues, objectParams));
+
+        const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString + (window.location.hash === '#' ? '' : window.location.hash);
+        m.route.set(newurl);
+    },
+    setAndResetMultParams = function (/** @type {{[key : string] : string}} */ setParams) {
+        const argumentsArray = Array.from(arguments);
+        const resetParams = argumentsArray.length > 1 ? argumentsArray.slice(1) : [];
+        const keysAndValues = reduceSearchString((finalQueryObject, keyValue) => {
+            const [key, value] = keyValue.split('=');
+            if (!resetParams.includes(key) && key) {
+                finalQueryObject[key] = value;
+            }
+            return finalQueryObject;
+        }, {});
+
+        const queryString = objectToSearchString(Object.assign(keysAndValues, setParams));
+
+        const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString + (window.location.hash === '#' ? '' : window.location.hash);
+        m.route.set(newurl);
+    },
+    setAndResetMultParamsArray = (/** @type {{[key : string] : string | number}} */ setParams, /** @type {string[]}*/ removeQuery = []) => {
+        
+        /** @type {Object} */ 
+        const query = m.parseQueryString(window.location.search);
+        
+        removeQuery.forEach(param => {
+            if (param in query) {
+                delete query[param];
+            }
+        });
+
+        const queryString = objectToSearchString(Object.assign(query, setParams));
+
+        const newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + queryString + (window.location.hash === '#' ? '' : window.location.hash);
+        m.route.set(newurl);
+    },
+    removeParamByName = (name) => {
+
+        const keysAndValues = reduceSearchString((finalQueryObject, keyValue) => {
+
+            const [key, value] = keyValue.split('=');
+            if (name !== key && key) {
+                finalQueryObject[key] = value;
+            }
+            return finalQueryObject;
+        }, {});
+
+        const queryString = objectToSearchString(keysAndValues);
+
+        const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString + (window.location.hash === '#' ? '' : window.location.hash);
+        m.route.set(newurl);
+    },
+    removeMultParams = function () {
+        const paramsNamesToRemove = Array.from(arguments);
+
+        const keysAndValues = reduceSearchString((finalQueryObject, keyValue) => {
+
+            const [key, value] = keyValue.split('=');            
+            if (!paramsNamesToRemove.includes(key) && key) {
+                finalQueryObject[key] = value;
+            }
+            return finalQueryObject;
+        }, {});
+        
+        const queryString = objectToSearchString(keysAndValues);
+
+        const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryString + (window.location.hash === '#' ? '' : window.location.hash);
+        m.route.set(newurl);
     },
     selfOrEmpty = (obj, emptyState = '') => obj || emptyState,
     setMomentifyLocale = () => {
@@ -369,14 +474,6 @@ const _dataCache = {},
         const meta = _.first(document.querySelectorAll('[name=rd-token]'));
         return meta ? (_dataCache.rdToken = meta.getAttribute('content')) : null;
     },
-    getSimilityCustomer = () => {
-        if (_dataCache.similityCustomer) {
-            return _dataCache.similityCustomer;
-        }
-
-        const meta = _.first(document.querySelectorAll('[name=simility-customer]'));
-        return meta ? (_dataCache.similityCustomer = meta.getAttribute('content')) : null;
-    },
     getNewsletterUrl = () => {
         if (_dataCache.newsletterUrl) {
             return _dataCache.newsletterUrl;
@@ -400,6 +497,10 @@ const _dataCache = {},
     getUserID = () => {
         const user = getUser();
         return user == null || user.user_id == null ? null : user.user_id;
+    },
+    getUserCommonID = () => {
+        const user = getUser();
+        return user && user.common_id
     },
     userSignedIn = () => !_.isNull(getUserID()),
     getBlogPosts = () => {
@@ -428,7 +529,7 @@ const _dataCache = {},
     },
     useAvatarOrDefault = avatarPath => avatarPath || '/assets/catarse_bootstrap/user.jpg',
     // Templates
-    loader = () => m('.u-text-center.u-margintop-30 u-marginbottom-30', [m('img[alt="Loader"][src="https://s3.amazonaws.com/catarse.files/loader.gif"]')]),
+    loader = () => m('.u-text-center.u-margintop-30.u-marginbottom-30', [m('img[alt="Loader"][src="https://s3.amazonaws.com/catarse.files/loader.gif"]')]),
     loaderWithSize = (width, height) => m(`img[alt="Loader"][width=${width}][height=${height || width}][src="https://s3.amazonaws.com/catarse.files/loader.gif"]`),
     newFeatureBadge = () => m('span.badge.badge-success.margin-side-5', window.I18n.t('projects.new_feature_badge')),
     fbParse = () => {
@@ -1010,47 +1111,46 @@ const _dataCache = {},
         const errorMessage = prop('');
 
         return {
-            isLastPage: vmInstance.isLastPage,
+            isLastPage() {
+                const loadedAmount = Number(vmInstance.collection().length || 0);
+                return loadedAmount >= vmInstance.total();
+            },
             isLoading: vmInstance.isLoading,
             collection: vmInstance.collection,
-            total: vmInstance.total,
+            total() {
+                try {
+                    return Number(vmInstance.total() || 0);
+                } catch(e) {
+                    return 0;
+                }
+            },
             error,
             errorMessage,
-            firstPage: params => {
-                return new Promise((resolve, reject) => {
-                    vmInstance
-                        .firstPage(params)
-                        .then(data => {
-                            error(false);
-                            errorMessage('');
-                            resolve(data);
-                            redraw();
-                        })
-                        .catch(errorString => {
-                            error(true);
-                            errorMessage(errorString);
-                            reject(errorString);
-                            redraw();
-                        });
-                });
+            async firstPage(params = {}) {
+                error(false);
+                errorMessage('');
+                try {
+                    return await vmInstance.firstPage(params);
+                } catch(e) {
+                    error(true);
+                    errorMessage(e);
+                    throw e;
+                } finally {
+                    redraw();
+                }
             },
-            nextPage: () => {
-                return new Promise((resolve, reject) => {
-                    vmInstance
-                        .nextPage()
-                        .then(data => {
-                            error(false);
-                            errorMessage('');
-                            resolve(data);
-                            redraw();
-                        })
-                        .catch(errorString => {
-                            error(true);
-                            errorMessage(errorString);
-                            reject(errorString);
-                            redraw();
-                        });
-                });
+            async nextPage() {
+                error(false);
+                errorMessage('');
+                try {
+                    return await vmInstance.nextPage();
+                } catch(e) {
+                    error(true);
+                    errorMessage(e);
+                    throw e;
+                } finally {
+                    redraw();
+                }
             },
         };
     },
@@ -1078,7 +1178,36 @@ const _dataCache = {},
         } catch (e) {
             Sentry.captureException(e);
         }
-    };
+    },
+    titleCase = (str) => {
+        // remove leading and trailing spaces
+        let newString = str ? str.trim() : '';
+        // remove multiple spaces
+        newString = newString.replace(/\s{2,}/g, ' ');
+        // lowercase
+        newString = newString.toLowerCase();
+
+        return newString.split(' ').map(function(word) {
+            if (['de', 'da', 'do', 'das', 'dos'].includes(word)) {
+                return word.toLowerCase()
+            } else {
+                return word ? word.replace(word[0], word[0].toUpperCase()) : '';
+            }
+        }).join(' ');
+    },
+    buildCreditCard = (creditCardFields) => {
+        let expirationMonth = String(creditCardFields.expMonth());
+        expirationMonth = (1 === expirationMonth.length ? '0' : '') + expirationMonth;
+        const expirationDate = expirationMonth + String(creditCardFields.expYear());
+
+        return {
+            card_number: creditCardFields.number(),
+            card_holder_name: titleCase(creditCardFields.name()),
+            card_expiration_date: expirationDate,
+            card_cvv: creditCardFields.cvv()
+        }
+    }
+
 
 /**
  * @param {string} phoneNumberStr
@@ -1098,12 +1227,162 @@ const extractPhoneNumber = (phoneNumberStr) => {
     return phoneNumberStr.match(extractPhoneFieldsRegex)[2].replace(/\D/g, '');
 };
 
+/**
+ * @param {T} data
+ * @template T
+ */
+function ObservableStream(data) {
+
+    /**
+     * @type {Array<function(T):void>}
+     */
+    const observers = [];
+    const privateData = prop(data);
+
+    /**
+     * @return {T}
+     */
+    function get() {
+        return privateData();
+    }
+
+    /**
+     * @param {T} newData
+     * @return {T}
+     */
+    function set(newData) {
+        privateData(newData);
+        notifyAll();
+        return newData;
+    }
+
+    /**
+     * @param {function(T):void} observeFunction
+     */
+    function observe(observeFunction) {
+        observers.push(observeFunction);
+    }
+
+    /**
+     * @param {T} newData
+     */
+    function notifyAll(newData) {
+        for (const observeFunction of observers) {
+            observeFunction(newData);
+        }
+    }
+
+    return {
+        get,
+        set,
+        observe,
+    }
+}
+
+/**
+ * @param {T} data
+ * @template T
+ */
+function ObservableRedrawStream(data) {
+    const observableStream = ObservableStream(data);
+    observableStream.observe(redraw);
+    return observableStream;
+}
+
+/**
+ * @param {T} data
+ * @param {(data : T) => void} onUpdate
+ * @template T
+ */
+function RedrawStream(data, onUpdate = (param) => {}) {
+
+    const _data = prop(data);
+
+    /**
+     * @param {T} newData
+     * @returns {T}
+     */
+    function streamAccessor(newData) {
+        if (newData !== undefined) {
+            _data(newData);
+            onUpdate(newData);
+            redraw();
+            return newData;
+        }
+        return _data();
+    }
+
+    return streamAccessor;
+}
+
+/**
+ * @param {T} data
+ * @template T
+ * @returns {{ (newData : T) => T, toggle() : T }}
+ */
+function RedrawToggleStream(firstState, secondState) {
+    const _data = prop(firstState);
+
+    /**
+     * @param {T} newData
+     * @returns {T}
+     */
+    function streamAccessor(newData) {
+        if (newData !== undefined) {
+            _data(newData);
+            redraw();
+            return newData;
+        }
+        return _data();
+    }
+
+    streamAccessor.toggle = () => streamAccessor(_data() === firstState ? secondState : firstState);
+
+    return streamAccessor;   
+}
+
+function createPropAcessors(obj) {
+    return Object.keys(obj).reduce((curObject, prop) => {
+        return Object.assign(curObject, {
+            [prop]: function (newValue) {
+                if (newValue !== undefined) {
+                    obj[prop] = newValue;
+                    return newValue;
+                }
+                return obj[prop];
+            }
+        });
+    }, {});
+}
+
 setMomentifyLocale();
 closeFlash();
 closeModal();
 checkReminder();
 
+function attachEventsToHistory(type) {
+    var orig = history[type];
+    return function() {
+        var rv = orig.apply(this, arguments);
+        var e = new Event(type.toLowerCase());
+        e.arguments = arguments;
+        window.dispatchEvent(e);
+        return rv;
+    };
+};
+
+/**
+ * @typedef VNode
+ * @property {Object} attrs
+ * @property {Object} state
+ */
+
 export default {
+    createPropAcessors,
+    ObservableStream,
+    ObservableRedrawStream,
+    RedrawStream,
+    RedrawToggleStream,
     extractPhoneDDD,
     extractPhoneNumber,
     SentryInitSDK,
@@ -1135,7 +1414,7 @@ export default {
     idVM,
     getUser,
     getUserID,
-    getSimilityCustomer,
+    getUserCommonID,
     getApiHost,
     getNewsletterUrl,
     getCurrentProject,
@@ -1164,6 +1443,12 @@ export default {
     toAnchor,
     capitalize,
     paramByName,
+    setParamByName,
+    setMultParams,
+    setAndResetMultParams,
+    setAndResetMultParamsArray,
+    removeParamByName,
+    removeMultParams,
     i18nScope,
     RDTracker,
     selfOrEmpty,
@@ -1197,4 +1482,7 @@ export default {
     userSignedIn,
     isDevEnv,
     trust,
+    attachEventsToHistory,
+    titleCase,
+    buildCreditCard
 };
