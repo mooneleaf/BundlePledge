@@ -25,6 +25,6 @@ jobs:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 1
       run: |
         cd services/catarse.js
-        npm i
-        npm run build
-        npm publish
+        yarn
+        yarn build
+        yarn publish
