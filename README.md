@@ -60,114 +60,34 @@ You will need the following tools installed:
  - terraform
  - AWS CLI w/ default credentials configured for the account you want to deploy to
 
-Inside `/infrastructure/terraform/cluster` run the following commands:
+
+(This only ever needs to be done once) Inside `/infrastructure/terraform/bootstrap` run the following commands:
 
 ```
 terraform init
-terraform plan --var provision=true --out plan
-terraform apply plan
-```
-
-Configure kubectl to talk to cluster:
-
-```
-aws eks --region $(terraform output region) update-kubeconfig --name $(terraform output cluster_name)
-```
-
-Check that your `kubectl` is connected to the cluster:
-
-```
-$ kubectl cluster-info
-Kubernetes master is running at https://38B74DBEA9E95716E5E724B719EFADF7.yl4.us-east-1.eks.amazonaws.com
-CoreDNS is running at https://38B74DBEA9E95716E5E724B719EFADF7.yl4.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-```
-
-Finish the provisioning:
-
-```
 terraform plan --out plan
 terraform apply plan
 ```
 
-Next add the metrics server (to enable system monitor dashboards):
+
+Inside `/infrastructure/terraform/ecr` run the following commands:
 
 ```
-wget -O v0.3.6.tar.gz https://codeload.github.com/kubernetes-sigs/metrics-server/tar.gz/v0.3.6 && tar -xzf v0.3.6.tar.gz
-kubectl apply -f metrics-server-0.3.6/deploy/1.8+/
+terraform init
+terraform plan --out plan
+terraform apply plan
 ```
 
-Wait for the deployment to show 1/1 READY
+Inside `/infrastructure/eksctl` run the following commands:
 
 ```
-kubectl get deployment metrics-server -n kube-system
+./build.sh
 ```
 
-Install the default Kubernetes dashboard:
+This will take some time. After it is done you can check if you can connect to the cluster:
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
-kubectl apply -f https://raw.githubusercontent.com/hashicorp/learn-terraform-provision-eks-cluster/master/kubernetes-dashboard-admin.rbac.yaml
-```
-
-Install AWS storage drivers:
-
-```
-kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
-```
-
-Install AWS ELB drivers:
-
-Install eksctl if needed: https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl
-
-```
-eksctl utils associate-iam-oidc-provider --region $(terraform output region) --cluster $(terraform output cluster_name) --approve
-```
-
-Now some env vars:
-```
-export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
-export OIDC_PROVIDER=$(aws eks describe-cluster --name $(terraform output cluster_name) --query "cluster.identity.oidc.issuer" --output text | sed -e "s/^https:\/\///")
-export ISSUER_URL=$(aws eks describe-cluster \
-                       --name $(terraform output cluster_name) \
-                       --query cluster.identity.oidc.issuer \
-                       --output text)
-export ISSUER_HOSTPATH=$(echo $ISSUER_URL | cut -f 3- -d'/')
-export PROVIDER_ARN="arn:aws:iam::$ACCOUNT_ID:oidc-provider/$ISSUER_HOSTPATH"
-cat > irp-trust-policy.json << EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "$PROVIDER_ARN"
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "${ISSUER_HOSTPATH}:sub": "system:serviceaccount:kube-system:alb-ingress-controller",
-          "${ISSUER_HOSTPATH}:aud": "sts.amazonaws.com"
-        }
-      }
-    }
-  ]
-}
-EOF
-export ROLE_NAME=catarse-elb-assume-role
-aws iam create-role \
-  --role-name $ROLE_NAME \
-  --assume-role-policy-document file://irp-trust-policy.json
-aws iam update-assume-role-policy \
-  --role-name $ROLE_NAME \
-  --policy-document file://irp-trust-policy.json
-aws iam attach-role-policy \
-  --role-name $ROLE_NAME \
-  --policy-arn $(terraform output elb_policy_arn)
-export ELB_ROLE_ARN=$(aws iam get-role \
-  --role-name $ROLE_NAME \
-  --query Role.Arn --output text)
-kubectl create -n kube-system sa alb-ingress-controller
-kubectl annotate -n kube-system sa alb-ingress-controller eks.amazonaws.com/role-arn=$ELB_ROLE_ARN
+kubectl cluster-info
 ```
 
 To login, you'll need a token. Generate one:
