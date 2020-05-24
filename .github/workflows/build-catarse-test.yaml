@@ -20,20 +20,12 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-    - name: Init NPM
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
-        registry-url: 'https://npm.pkg.github.com'
     - name: Decrypt
       run: |
         sops -d infrastructure/kustomize/overlays/test-run/catarse-secrets.yaml > infrastructure/kustomize/overlays/test-run/catarse-secrets-dec.yaml
         sops -d services/service-core-db/setup_fdw_grants.sql.enc > services/service-core-db/setup_fdw_grants.sql
     - name: Build
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        export NPM_AUTH=$(cat .npmrc)
-        echo $NPM_AUTH
         skaffold build -p test-run,test-db,test-catarse,test-migrations,test-prime,test-setup

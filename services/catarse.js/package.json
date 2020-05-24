@@ -11,7 +11,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com/mooneleaf/services-core.git",
+        "url": "ssh://git@github.com/mooneleaf/BundlePledge.git",
         "directory": "services/catarse.js"
     },
     "resolutions": {
