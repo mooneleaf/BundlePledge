@@ -16,6 +16,7 @@ $ docker-compose up migrations
 $ psql -h localhost -p 5444 -U postgres service_core < services/service-core-db/sample.seed.sql
 ```
 
+
 Start services:
 `$ docker-compose up -d`
 
