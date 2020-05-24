@@ -27,5 +27,6 @@ jobs:
     - name: Build
       env:
         IMAGE_TAG: ${{ github.sha }}
+        NPM_AUTH: ${{ secrets.NPM_AUTH }}
       run: |
         skaffold build -p test-run,test-db,test-catarse,test-migrations,test-prime,test-setup
