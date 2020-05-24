@@ -7,7 +7,7 @@ jobs:
   build:
     name: Build the builder
     runs-on: ubuntu-latest
-    container: soapbubble/aws-cloud-builder:443bd8ab1e4f4bebfbbe66b87a9dea2cb2436f88
+    container: soapbubble/aws-cloud-builder:84aee74bf77e17b9e6de996817e546eacfbe573b
     steps:    
     - name: Checkout
       uses: actions/checkout@v2 
