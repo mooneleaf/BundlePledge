@@ -34,6 +34,6 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        export NPM_AUTH=$(cat ~/.npmrc)
+        export NPM_AUTH=$(cat .npmrc)
         echo $NPM_AUTH
         skaffold build -p test-run,test-db,test-catarse,test-migrations,test-prime,test-setup
