@@ -27,6 +27,8 @@ jobs:
     - name: Build
       env:
         IMAGE_TAG: ${{ github.sha }}
-        NPM_AUTH: ${{ secrets.NPM_AUTH }}
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        export NPM_AUTH="@mooneleaf:registry=https://npm.pkg.github.com
+        //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}"
         skaffold build -p test-run,test-db,test-catarse,test-migrations,test-prime,test-setup
