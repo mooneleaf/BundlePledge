@@ -29,5 +29,7 @@ jobs:
         yarn build
     - name: Auto publish to github
       uses: luvies/action-yarn-publish@v0.1.1
+      with:
+        package-path: services/catarse.js
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
