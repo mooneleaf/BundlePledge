@@ -14,6 +14,9 @@
         "url": "ssh://git@github.com/mooneleaf/BundlePledge.git",
         "directory": "services/catarse.js"
     },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "resolutions": {
         "graceful-fs": "4.2.4"
     },
