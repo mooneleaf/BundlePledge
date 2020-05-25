@@ -33,21 +33,21 @@ uplinks:
 packages:
   # This is the catarse package we want to be able to publish privately
   'catarse.js':
-    access: $authenticated
-    publish: $authenticated
-    unpublish: $authenticated
+    access: $all
+    publish: $all
+    unpublish: $all
 
   # scoped packages
   '@*/*':
-    access: $authenticated
-    publish: $authenticated
-    unpublish: $authenticated
+    access: $all
+    publish: $all
+    unpublish: $all
     proxy: npmjs
 
   '**':
-    access: $authenticated
-    publish: $authenticated
-    unpublish: $authenticated
+    access: $all
+    publish: $all
+    unpublish: $all
     proxy: npmjs
 
 # You can specify HTTP/1.1 server keep alive timeout in seconds for incoming connections.
