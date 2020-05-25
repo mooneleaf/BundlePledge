@@ -20,7 +20,6 @@ jobs:
         node-version: '12.x'
     - name: Build
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 1
       run: |
         cd services/catarse.js
