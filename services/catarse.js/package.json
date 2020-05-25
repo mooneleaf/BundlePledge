@@ -1,6 +1,6 @@
 {
-    "name": "@mooneleaf/catarse-js",
-    "version": "1.0.37",
+    "name": "@soapbubble/catarse.js",
+    "version": "1.0.38",
     "author": "Diogo Biazus",
     "browserslist": "> 0.25%, not dead",
     "contributors": [

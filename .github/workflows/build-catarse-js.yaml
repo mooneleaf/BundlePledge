@@ -32,4 +32,4 @@ jobs:
       with:
         package-path: services/catarse.js
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.PM_PUBLISH_TOKEN }}
