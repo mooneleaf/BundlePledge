@@ -19,13 +19,19 @@ jobs:
       with:
         node-version: '12.x'
         registry-url: 'https://registry.npmjs.org'
-    - name: Build
+    - name: Install
       env:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 1
-      run: |
-        cd services/catarse.js
-        yarn
-        yarn build
+      working-directory: ./services/catarse.js
+      run: yarn
+    - name: Build
+      working-directory: ./services/catarse.js
+      run: yarn build
+    - name: Publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+      working-directory: ./services/catarse.js
+      run: yarn publish
     - name: Auto publish to github
       uses: luvies/action-yarn-publish@v0.1.1
       with:
