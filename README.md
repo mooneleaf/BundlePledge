@@ -29,7 +29,7 @@ $ docker-compose exec catarse rake db:migrate # run again and should finish migr
 
 ## Skaffold notes
 
-Using Verdaccio (an open source private NPM registry) to be able to create intermediary builds of catarse.js. See services/private-npm-registry for details on setting up
+Using Verdaccio (an open source private NPM registry) to be able to create intermediary builds of catarse.js. See [services/private-npm-registry](https://github.com/mooneleaf/BundlePledge/tree/develop/services/private-npm-registry) for details on setting up
 
 After generating an ~/.npmrc file, add it to the env for the build:
 `export NPM_AUTH=$(cat ~/.npmrc)`
