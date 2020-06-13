@@ -8,7 +8,7 @@ const version = `${packageJson.version}-${rnd}`;
 try {
     copyFileSync('./package.json', './package.cache.json');
     writeFileSync('./package.json', JSON.stringify({ ...packageJson, version }, null, 2), 'utf8');
-    writeFileSync('../catarse/deps-patch.json', JSON.stringify({ 'catarse.js': version }, null, 2), 'utf8');
+    writeFileSync('../catarse/deps-patch.json', JSON.stringify({ '@mooneleaf/catarse.js': version }, null, 2), 'utf8');
     execSync('npm publish --registry http://localhost:4873');
 } catch (error) {
     console.warn('Failed to publish');

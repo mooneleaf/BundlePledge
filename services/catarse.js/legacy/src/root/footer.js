@@ -1,5 +1,8 @@
 import m from 'mithril';
 import h from '../h';
+import _ from "underscore";
+
+const I18nScope = _.partial(h.i18nScope, 'layouts.footer');
 
 const footer = {
     view: function() {
@@ -14,59 +17,57 @@ const footer = {
                                         m('.w-col.w-col-4.w-col-small-4.w-col-tiny-4.w-hidden-tiny',
                                             [
                                                 m('.footer-full-signature-text.fontsize-small',
-                                                    'Bem-vindo'
+                                                    I18n.t('titles.contact', I18nScope())
                                                 ),
                                                 m('a.link-footer[href=\'http://crowdfunding.catarse.me/quem-somos?ref=ctrse_footer\']',
-                                                    ' Quem Somos'
+                                                    I18n.t('links.what_we_do', I18nScope())
                                                 ),
                                                 m('a.link-footer[href=\'http://crowdfunding.catarse.me/paratodos?ref=ctrse_footer\']',
-                                                    ' Como funciona'
+                                                    I18n.t('links.how_it_works', I18nScope())
                                                 ),
                                                 m('a.link-footer[href=\'http://blog.catarse.me\']',
-                                                    ' Blog'
+                                                    I18n.t('links.blog', I18nScope())
                                                 ),
                                                 m(`a.link-footer[href=\'https://www.catarse.me/${window.I18n.locale}/team?ref=ctrse_footer\']`,
                                                     [
-                                                        ' Nosso time ',
+                                                        I18n.t('links.team', I18nScope()),
+                                                        ' ',
                                                         m.trust('&lt;'),
                                                         '3'
                                                     ]
                                                 ),
-                                                m(`a.link-footer[href=\'https://www.catarse.me/${window.I18n.locale}/press?ref=ctrse_footer\']`,
-                                                    ' Imprensa'
-                                                ),
-                                                m('a.u-marginbottom-30.link-footer[href=\'http://ano.catarse.me/2018?ref=ctrse_footer\']',
-                                                    ' Retrospectiva 2018'
+                                                m(`a.u-marginbottom-30.link-footer[href=\'https://www.catarse.me/${window.I18n.locale}/press?ref=ctrse_footer\']`,
+                                                    I18n.t('links.press', I18nScope())
                                                 ),
                                                 m('.footer-full-signature-text.fontsize-small',
-                                                    'Redes Sociais'
+                                                    I18n.t('titles.social', I18nScope())
                                                 ),
                                                 m('a.link-footer[href=\'http://facebook.com/catarse.me\']',
                                                     [
                                                         m('span.fa.fa-facebook-square.fa-lg'),
                                                         m.trust('&nbsp;&nbsp;'),
-                                                        'Facebook'
+                                                        I18n.t('links.facebook', I18nScope())
                                                     ]
                                                 ),
                                                 m('a.link-footer[href=\'http://twitter.com/catarse\']',
                                                     [
                                                         m('span.fa.fa-twitter-square.fa-lg'),
                                                         m.trust('&nbsp;&nbsp;'),
-                                                        'Twitter'
+                                                        I18n.t('links.twitter', I18nScope())
                                                     ]
                                                 ),
                                                 m('a.link-footer[href=\'http://instagram.com/catarse\']',
                                                     [
                                                         m('span.fa.fa-instagram.fa-lg'),
                                                         m.trust('&nbsp;&nbsp;'),
-                                                        'Instagram'
+                                                        I18n.t('links.instagram', I18nScope())
                                                     ]
                                                 ),
                                                 m('a.link-footer[href=\'http://github.com/catarse/catarse\']',
                                                     [
                                                         m('span.fa.fa-github-square.fa-lg'),
                                                         m.trust('&nbsp;&nbsp;'),
-                                                        'Github'
+                                                        I18n.t('links.github', I18nScope())
                                                     ]
                                                 )
                                             ]
@@ -74,18 +75,18 @@ const footer = {
                                         m('.w-col.w-col-4.w-col-small-4.w-col-tiny-4.footer-full-firstcolumn',
                                             [
                                                 m('.footer-full-signature-text.fontsize-small',
-                                                    'Ajuda'
+                                                    I18n.t('links.faq', I18nScope())
                                                 ),
                                                 m('a.link-footer[href=\'http://suporte.catarse.me?ref=ctrse_footer/\']',
-                                                    ' Central de Suporte'
+                                                    I18n.t('links.help_support', I18nScope())
                                                 ),
                                                 h.getUser() ?
                                                     m('a.link-footer[href=\'https://suporte.catarse.me/hc/pt-br/signin?return_to=https%3A%2F%2Fsuporte.catarse.me%2Fhc%2Fpt-br%2Frequests%2Fnew&locale=19\'][target="_BLANK"]',
-                                                      ' Contato'
+                                                        I18n.t('links.contact', I18nScope())
                                                      )
                                                     :
                                                     m('a.link-footer[href=\'http://suporte.catarse.me/hc/pt-br/requests/new\'][target="_BLANK"]',
-                                                      ' Contato'
+                                                        I18n.t('links.contact', I18nScope())
                                                      ),
                                                 m('a.link-footer[href=\'http://blog.catarse.me/category/atualizacoes\']',
                                                   ' Atualizações 🌟'
@@ -175,11 +176,7 @@ const footer = {
                                                 )
                                             ]
                                         )
-                                    ),
-                                    m('.footer-full-signature-text.fontsize-small',
-                                        'Change language'
-                                    ),
-                                    m('[id=\'google_translate_element\']')
+                                    )
                                 ]
                             )
                         ]

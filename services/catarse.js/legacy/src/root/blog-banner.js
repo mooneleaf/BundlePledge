@@ -4,6 +4,8 @@ import _ from 'underscore';
 import h from '../h';
 import blogVM from '../vms/blog-vm';
 
+const I18nScope = _.partial(h.i18nScope, 'projects.index');
+
 const blogBanner = {
     oninit: function(vnode) {
         const posts = prop([]),
@@ -24,7 +26,7 @@ const blogBanner = {
                             ),
                             m('.fontsize-large.u-marginbottom-60.text-success',
                                 m('a.link-hidden-success[href=\'http://blog.catarse.me\'][target=\'__blank\']',
-                                    'Blog do Catarse'
+                                    I18n.t('blog', I18nScope())
                                 )
                             )
                         ]

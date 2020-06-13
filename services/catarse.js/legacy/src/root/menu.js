@@ -4,7 +4,7 @@ import h from '../h';
 import menuSearch from '../c/menu-search';
 import menuProfile from '../c/menu-profile';
 
-const I18nScope = _.partial(h.i18nScope, 'layouts');
+const I18nScope = _.partial(h.i18nScope, 'pages.jobs');
 
 const menu = {
     oninit: function(vnode) {
@@ -45,16 +45,16 @@ const menu = {
                         ),
                         attrs.menuShort ? '' : m('div#menu-components', [
                             m('a.w-hidden-small.w-hidden-tiny.header-link.w-nav-link[href=\'https://crowdfunding.catarse.me/comece\']',
-                                I18n.t('header.submit', I18nScope())),
+                                window.I18n.t('submit', I18nScope())),
                             m('a.w-hidden-small.w-hidden-tiny.header-link.w-nav-link[href=\'/explore?ref=ctrse_header\']', { oncreate: m.route.link },
-                                I18n.t('header.discover', I18nScope())),
+                                window.I18n.t('discover', I18nScope())),
                             m(menuSearch)
                         ])
                     ]
                 ),
                 m('.text-align-right.w-col.w-col-4.w-col-small-4.w-col-tiny-4', [
                     state.user ? m(menuProfile, { user: state.user }) : m(`a.w-nav-link.header-link.w-nav-link.btn-edit.u-right[href=\'/${window.I18n.locale}/login?ref=ctrse_header\']`,
-                        I18n.t('header.signin', I18nScope())),
+                        I18n.t('signin', I18nScope())),
                 ])
 
             ]),
@@ -62,11 +62,11 @@ const menu = {
                 [
                     m(`a.header-link.w-nav-link[href=\'/${window.I18n.locale}/start?ref=ctrse_header\']`,
                         { onclick: () => m.route.set('/start') },
-                        I18n.t('header.submit', I18nScope())
+                        'Comece seu projeto'
                     ),
                     m(`a.header-link.w-nav-link[href=\'/${window.I18n.locale}/explore?ref=ctrse_header\']`,
                         { onclick: () => m.route.set('/explore') },
-                        I18n.t('header.discover', I18nScope())
+                        'Explore'
                     )
                 ]
             )

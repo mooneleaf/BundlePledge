@@ -6,6 +6,8 @@ import h from '../h';
 import models from '../models';
 import { catarse } from '../api';
 
+const I18nScope = _.partial(h.i18nScope, 'shared.menus.user');
+
 const menuProfile = {
     oninit: function(vnode) {
         const contributedProjects = prop(),
@@ -66,14 +68,14 @@ const menuProfile = {
                                 m('.w-col.w-col-12',
                                     [
                                         m('.fontweight-semibold.fontsize-smaller.u-marginbottom-10',
-                                            'Meu histórico'
+                                            I18n.t('contributions_history', I18nScope())
                                         ),
                                         m('ul.w-list-unstyled.u-marginbottom-20',
                                             [
                                                 m('li.lineheight-looser',
                                                   m(`a.alt-link.fontsize-smaller[href='/${window.I18n.locale}/users/${user.id}/edit#balance']`,
                                                     m('span', [
-                                                        'Saldo ',
+                                                        I18n.t('total', I18nScope()),
                                                         (state.userBalance() > 0 ? m('span.fontcolor-secondary',
                                                           `R$ ${h.formatNumber(state.userBalance(), 2, 3)}`) : ''),
                                                     ])
@@ -81,7 +83,7 @@ const menuProfile = {
                                                  ),
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href='/${window.I18n.locale}/users/${user.id}/edit#contributions']`,
-                                                        'Histórico de apoio'
+                                                        I18n.t('contributions_history_nav', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
