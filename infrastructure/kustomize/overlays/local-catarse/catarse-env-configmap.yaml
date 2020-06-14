@@ -2,6 +2,7 @@ apiVersion: v1
 data:
   SECRET_KEY: "notaverygoodsecret"
   RAILS_ENV: "development"
+  WEBPACK_DEV_SERVER: "http://catarse-js-webpack:8080"
   BUNDLE_SITE_URL: "http://localhost:3000"
   BUNDLE_AUTHORIZE_URL: "http://local.bundlesites.com/oauth/authorize"
   OAUTH_DEBUG: "true"
