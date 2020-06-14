@@ -29,27 +29,36 @@ $ docker-compose exec catarse rake db:migrate # run again and should finish migr
 
 ## Skaffold notes
 
-Using Verdaccio (an open source private NPM registry) to be able to create intermediary builds of catarse.js. See [services/private-npm-registry](https://github.com/mooneleaf/BundlePledge/tree/develop/services/private-npm-registry) for details on setting up
-
-After generating an ~/.npmrc file, add it to the env for the build:
-`export NPM_AUTH=$(cat ~/.npmrc)`
-
 Start with running the base profile:
-`skaffold run -p local-run,local-db-init`
+```
+skaffold run -p local-run
+skaffold run -p local-db-init
+```
 
 Start the migration job:
-`skaffold run -p local-migrations`
+```
+skaffold run -p local-migrations
+```
 
 Now seed the DB:
-`skaffold run -p local-prime`
+```
+skaffold run -p local-prime
+```
 
 Next load default/demo settings
-`skaffold run -p local-setup`
+```
+skaffold run -p local-setup
+```
 
-Wait for migrations job to re-run and be succesful. To check the status of the migration run `kubectl logs job/catarse-migrations`. 
+Wait for migrations job to re-run and be succesful. To check the status of the migration run 
+```
+kubectl logs job/catarse-migrations
+```. 
 
 Run catarse:
-`skaffold dev -p local-catarse --port-forward`
+```
+skaffold dev -p local-catarse --port-forward
+```
 
 Catarse is now running at http://localhost:3000
 
@@ -103,3 +112,4 @@ kubectl proxy
 ```
 
 While the proxy is running, visist http://127.0.0.1:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/ and enter the token retrieved earlier.
+

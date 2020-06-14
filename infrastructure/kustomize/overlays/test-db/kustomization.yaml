@@ -2,3 +2,6 @@ resources:
  - service-core-db.yaml
  - catarse-db.yaml
  - catarse-moments-db.yaml
+ - catarse-data-persistentvolumeclaim.yaml
+ - catarse-moments-data-persistentvolumeclaim.yaml
+ - postgres-data-persistentvolumeclaim.yaml
