@@ -66,10 +66,23 @@ profiles:
         - image: catarse-deploy/catarse
           context: ./services/catarse/
           docker:
-            network: 'host'
-            buildArgs:
-              NPM_AUTH: '{{ .NPM_AUTH }}'
-            dockerfile: ./dev.Dockerfile  
+            dockerfile: ./Dockerfile  
+        - image: catarse-local/webpack-dev-server
+          context: ./services/catarse.js
+          docker:
+            dockerfile: ./local.Dockerfile
+          sync:
+            infer:
+              - 'legacy/**'
+              - '.babelrc'
+              - '.eslintrc.js'
+              - '.flowconfig'
+              - '.jscsrc'
+              - '.jshintignore'
+              - 'package.json'
+              - 'yarn.lock'
+              - 'webpack.config.js'
+                
     deploy:
       kustomize:
         path: infrastructure/kustomize/overlays/local-catarse

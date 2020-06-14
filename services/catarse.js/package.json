@@ -73,7 +73,8 @@
         "ts-loader": "^7.0.4",
         "typescript": "^3.9.2",
         "uglifyjs-webpack-plugin": "^1.2.6",
-        "webpack": "^4.43.0"
+        "webpack": "^4.43.0",
+        "webpack-dev-server": "^3.11.0"
     },
     "watch": {
         "publish:dev": {
@@ -83,12 +84,12 @@
         }
     },
     "scripts": {
-        "test": "./node_modules/karma/bin/karma start",
+        "test": "karma start",
         "start": "webpack -d --watch",
         "start-dev": "NODE_OPTIONS=\"--max-old-space-size=512\" webpack -d --watch",
-        "build": "./node_modules/.bin/webpack",
+        "build": "webpack",
         "build:prod": "NODE_ENV=production ./node_modules/.bin/webpack --mode production",
-        "build:dev": "./node_modules/.bin/webpack-dev-server",
+        "build:dev": "webpack-dev-server",
         "publish:dev": "node publish.dev"
     },
     "dependencies": {
