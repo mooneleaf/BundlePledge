@@ -3,7 +3,8 @@ kind: Ingress
 metadata:
   name: catarse
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
   labels:
     app: catarse
 spec:
