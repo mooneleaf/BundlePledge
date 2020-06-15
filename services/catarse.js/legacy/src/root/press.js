@@ -86,7 +86,7 @@ const press = {
                                     m('.fontsize-smaller', m.trust(window.I18n.t('stats.money_html', I18nScope())))
                                 ])
                             ]),
-                            m('a.alt-link.fontsize-large[href=\'https://www.catarse.me/dbhero/dataclips/fa0d3570-9fa7-4af3-b070-2b2e386ef060\'][target=\'_blank\']', [
+                            m('a.alt-link.fontsize-large[href=\'dbhero/dataclips/fa0d3570-9fa7-4af3-b070-2b2e386ef060\'][target=\'_blank\']', [
                                 m.trust(window.I18n.t('stats.cta_html', I18nScope()))
                             ])
                         ])
@@ -107,7 +107,7 @@ const press = {
                     ),
                     m('.w-row',
                         m('.w-col.w-col-4.w-col-push-4.u-text-center',
-                            m('a.alt-link.fontsize-large[href=\'https://www.catarse.me/assets\'][target=\'_blank\']', [
+                            m('a.alt-link.fontsize-large[href=\'assets\'][target=\'_blank\']', [
                                 m.trust(window.I18n.t('assets.cta_html', I18nScope()))
                             ])
                         )

@@ -436,7 +436,7 @@ const dashboardRewardCard = {
                 m('.w-form',
                     m('.w-col.w-col-6',
                         m(copyTextInput, {
-                            value: `https://www.catarse.me/pt/projects/${project.project_id}/${isSubscription ? 'subscriptions/start' : 'contributions/new'}?reward_id=${reward.id()}`
+                            value: `pt/projects/${project.project_id}/${isSubscription ? 'subscriptions/start' : 'contributions/new'}?reward_id=${reward.id()}`
                         }),
                     )
                 ),

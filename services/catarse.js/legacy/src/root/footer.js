@@ -28,7 +28,7 @@ const footer = {
                                                 m('a.link-footer[href=\'http://blog.catarse.me\']',
                                                     I18n.t('links.blog', I18nScope())
                                                 ),
-                                                m(`a.link-footer[href=\'https://www.catarse.me/${window.I18n.locale}/team?ref=ctrse_footer\']`,
+                                                m(`a.link-footer[href=\'${window.I18n.locale}/team?ref=ctrse_footer\']`,
                                                     [
                                                         I18n.t('links.team', I18nScope()),
                                                         ' ',
@@ -36,7 +36,7 @@ const footer = {
                                                         '3'
                                                     ]
                                                 ),
-                                                m(`a.u-marginbottom-30.link-footer[href=\'https://www.catarse.me/${window.I18n.locale}/press?ref=ctrse_footer\']`,
+                                                m(`a.u-marginbottom-30.link-footer[href=\'${window.I18n.locale}/press?ref=ctrse_footer\']`,
                                                     I18n.t('links.press', I18nScope())
                                                 ),
                                                 m('.footer-full-signature-text.fontsize-small',

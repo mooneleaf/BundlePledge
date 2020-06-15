@@ -103,15 +103,15 @@ const thankYou = {
                                   m('.w-hidden-small.w-hidden-tiny',
                                       [
                                           m('.w-sub-col.w-col.w-col-4', m(facebookButton, {
-                                              url: `https://www.catarse.me/${attrs.contribution.project.permalink}?ref=ctrse_thankyou&utm_source=facebook.com&utm_medium=social&utm_campaign=project_share`,
+                                              url: `${attrs.contribution.project.permalink}?ref=ctrse_thankyou&utm_source=facebook.com&utm_medium=social&utm_campaign=project_share`,
                                               big: true
                                           })),
                                           m('.w-sub-col.w-col.w-col-4', m(facebookButton, {
                                               messenger: true,
                                               big: true,
-                                              url: `https://www.catarse.me/${attrs.contribution.project.permalink}?ref=ctrse_thankyou&utm_source=facebook.com&utm_medium=messenger&utm_campaign=thanks_share`
+                                              url: `${attrs.contribution.project.permalink}?ref=ctrse_thankyou&utm_source=facebook.com&utm_medium=messenger&utm_campaign=thanks_share`
                                           })),
-                                          m('.w-col.w-col-4', m(`a.btn.btn-large.btn-tweet.u-marginbottom-20[href="https://twitter.com/intent/tweet?text=Acabei%20de%20apoiar%20o%20projeto%20${encodeURIComponent(attrs.contribution.project.name)}%20https://www.catarse.me/${attrs.contribution.project.permalink}%3Fref%3Dtwitter%26utm_source%3Dtwitter.com%26utm_medium%3Dsocial%26utm_campaign%3Dproject_share"][target="_blank"]`, [
+                                          m('.w-col.w-col-4', m(`a.btn.btn-large.btn-tweet.u-marginbottom-20[href="https://twitter.com/intent/tweet?text=Acabei%20de%20apoiar%20o%20projeto%20${encodeURIComponent(attrs.contribution.project.name)}%20${attrs.contribution.project.permalink}%3Fref%3Dtwitter%26utm_source%3Dtwitter.com%26utm_medium%3Dsocial%26utm_campaign%3Dproject_share"][target="_blank"]`, [
                                               m('span.fa.fa-twitter'), ' Twitter'
                                           ]))
                                       ]

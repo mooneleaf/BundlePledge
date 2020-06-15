@@ -838,7 +838,7 @@ const _dataCache = {},
             permalink = project.permalink;
         }
 
-        return `https://www.catarse.me/${permalink}`;
+        return `${permalink}`;
     },
     isHome = () => {
         const path = window.location.pathname;
