@@ -1,0 +1,40 @@
+name: Build Catarse.js
+on: 
+  push:
+    paths:
+      - 'services/catarse.js/**'
+      - '.github/workflows/build-catarse-js.yaml'
+    branches:
+    - develop
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container: soapbubble/aws-cloud-builder:84aee74bf77e17b9e6de996817e546eacfbe573b
+    steps:    
+    - name: Checkout
+      uses: actions/checkout@v2 
+    - name: Init NPM
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+        registry-url: 'https://registry.npmjs.org'
+    - name: Install
+      env:
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 1
+      working-directory: ./services/catarse.js
+      run: yarn
+    - name: Build
+      working-directory: ./services/catarse.js
+      run: yarn build
+    - name: Publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+      working-directory: ./services/catarse.js
+      run: yarn publish
+    - name: Auto publish to github
+      uses: luvies/action-yarn-publish@v0.1.1
+      with:
+        package-path: services/catarse.js
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

@@ -7,6 +7,8 @@ pt:
       publish: 'Continuar'
       send: 'Enviar'
     edit:
+      integrations_html: "Integrações <span class='fontcolor-terciary'>(opcional)</span>"
+      integrations_subtitle: 'Envie informações de seu projeto diretamente para o Google Analytics e Facebook e amplifique o marketing de sua campanha'
       reward_html: "Recompensas <span class='fontcolor-terciary'>(opcional)</span>"
       video_subtitle: 'O vídeo é opcional, mas recomendamos muito que você faça! Um bom vídeo faz a diferença e pode ser o grande responsável pelo sucesso do seu projeto.'
       reward_subtitle: "Se você quiser iniciar o projeto sem recompensa e adicionar depois também, fique a vontade!"
@@ -91,7 +93,7 @@ pt:
           description: 'Indica quando o apoiador irá receber a recompensa escolhida. Cuidado ao definir essa data para não frustrar seus apoiadores. Na dúvida, seja conservador nos prazos.'
         4:
           title: 'Tipo de entrega:'
-          description: 'Como será o envio da recompensa e quanto irá custar para o apoiador. Caso você adicione um valor de frete, ele será adicionado quando o apoiador selecionar a recompensa e a localidade. <a href="http://blog.catarse.me/o-calculo-de-envio-de-recompensas-financiamento-coletivo/" target="_blank" class="alt-link">Saiba mais</a>.'
+          description: 'Como será o envio da recompensa e quanto irá custar para o apoiador. Caso você adicione um valor de frete, ele será adicionado quando o apoiador selecionar a recompensa e a localidade. Lembre-se que a taxa do Catarse será aplicada também sobre o valor de frete. <a href="http://blog.catarse.me/o-calculo-de-envio-de-recompensas-financiamento-coletivo/" target="_blank" class="alt-link">Saiba mais</a>.'
         5:
           title: 'Número de recompensas:'
           description: 'Você também pode Limitar uma recompensa para um determinado número de apoios e mudar a ordem que as recompensas aparecem em seu projeto. <a href="http://suporte.catarse.me/hc/pt-br/articles/212191546-tudo-sobre-RECOMPENSAS#como-editar" target="_blank" class="alt-link">Saiba mais</a>.'
@@ -303,13 +305,18 @@ pt:
       mode_hint: 'Escolha o modelo de sua campanha de financiamento coletivo. Após iniciar a sua campanha, não será permitido trocar.'
       mode_diff_ebook: '<a class="fontsize-small" href="https://catarse.attach.io/BkLCRfXyg" target="_blank">Baixe nosso <span class="fontweight-bold">ebook Flex vs Tudo ou Nada</span></a>'
       mode_diff_link: 'Veja a diferença entre os modelos'
-      flex_diff_html: '<span class="fontweight-semibold">Compromisso&nbsp;<br></span>Você se compromete a executar o projeto e entregar as recompensas (caso tenha optado por ofertá-las), <span class="fontweight-semibold">independente do valor arrecadado</span><br><br><span class="fontweight-semibold">Como funciona?</span><br>Você recebe, ao final do prazo, tudo o que tiver arrecadado (descontando apenas a taxa do Catarse), independente de alcançar a meta de arrecadação.<br><br><span class="fontweight-semibold">Prazo máximo do projeto no ar: </span>12 meses<br><br><span class="fontweight-semibold">Taxas: </span>13% sobre o total arrecadado'
-      aon_diff_html: '<span class="fontweight-semibold">Compromisso&nbsp;</span><br>Você se compromete a executar o projeto e entregar as recompensas apenas <span class="fontweight-semibold">se a arrecadação atingir ou superar a meta.</span><br><br><span class="fontweight-semibold">Como funciona?</span><br>Você só recebe o valor arrecadado se, ao final do prazo,&nbsp;tiver alcançado a meta de arrecadação . Caso contrário, todos seus apoiadores recebem seus pagamentos de volta.<br><br><span class="fontweight-semibold">Prazo máximo do projeto no ar: </span>60 dias&nbsp;&nbsp;<br><br><span class="fontweight-semibold">Taxas: </span>13% sobre o total arrecadado'
+      flex_diff_html: '<span class="fontweight-semibold">Compromisso&nbsp;<br></span>Você se compromete a executar o projeto e entregar as recompensas (caso tenha optado por ofertá-las), <span class="fontweight-semibold">independente do valor arrecadado</span><br><br><span class="fontweight-semibold">Como funciona?</span><br>Você recebe, ao final do prazo, tudo o que tiver arrecadado (descontando apenas a taxa do Catarse), independente de alcançar a meta de arrecadação.<br><br><span class="fontweight-semibold">Prazo máximo do projeto no ar: </span>12 meses<br><br>'
+      flex_diff_fees_html: '<span class="fontweight-semibold">Taxas: </span>%{percentage}% sobre o total arrecadado'
+      aon_diff_html: '<span class="fontweight-semibold">Compromisso&nbsp;</span><br>Você se compromete a executar o projeto e entregar as recompensas apenas <span class="fontweight-semibold">se a arrecadação atingir ou superar a meta.</span><br><br><span class="fontweight-semibold">Como funciona?</span><br>Você só recebe o valor arrecadado se, ao final do prazo,&nbsp;tiver alcançado a meta de arrecadação . Caso contrário, todos seus apoiadores recebem seus pagamentos de volta.<br><br><span class="fontweight-semibold">Prazo máximo do projeto no ar: </span>60 dias&nbsp;&nbsp;<br><br>'
+      aon_diff_fees_html: '<span class="fontweight-semibold">Taxas: </span>%{percentage}% sobre o total arrecadado'
       submit: "Salvar"
       kind_label: "Tipo de financiamento"
       kind_link: "Se você quiser saber mais, clique aqui"
       flex:
         kind_text: "Você está participando do período de testes do modelo flexível. Sua participação é essencial para entendermos como podemos expandir esse modelo para todos os usuários. %{link}"
+    
+    solidarity_taxes_description_html: '<div class="card u-radius u-marginbottom-30 medium u-margintop-60"><img src="https://www.catarse.me/assets/catarsesolidariablueheart.png" width="177" alt="" class="u-marginbottom-30"><div class="fontsize-small"><strong>O que é a taxa do Catarse?<br>&zwj;</strong><br>É o valor que será descontado do total arrecadado ao final da campanha, referente aos serviços do Catarse e do meio de pagamento.<br><br>Como o seu projeto faz parte do Programa Catarse Solidária, a taxa que será descontada no fim do seu projeto é definida por você mesmo. <strong>Quando você criou o seu rascunho, você disse que achava justo pagar %{percentage}% para o Catarse.</strong> <br><br><strong>Lembre-se, depois que sua campanha for publicada, você não poderá mais alterar essa taxa.</strong> Se mudou de ideia e quiser escolher outra taxa, o <a href="http://crowdfunding.catarse.me/solidaria/novo?utm_source=Catarse&amp;utm_medium=project_dashboard_goal&amp;utm_campaign=solidaria" target="_blank" class="alt-link">melhor é criar um outro rascunho.</a></div></div>'
+
     dashboard_description:
       submit: "Salvar"
       description_label: 'Descrição do projeto'
@@ -408,9 +415,24 @@ pt:
       online_date: 'Data de entrada no ar'
       user_id: 'Id do usuário'
       service_fee: 'Taxa do catarse'
+      solidarity_covid: 'Projeto COVID-19?'
       name: 'Nome do projeto'
       name_hint: 'Dê um nome que as pessoas se lembrem facilmente. Não ultrapasse 50 caracteres.'
       name_label: 'Quanto mais direto melhor. Não ultrapasse 50 caracteres'
+      adult_content: 'O seu projeto contém nudez e/ou cenas de sexo explícito?'
+      adult_content_hint: ''
+      adult_content_label: ''
+      adult_content_description: 'O Catarse é um local onde diversos tipos de pessoas podem se expressar livremente. E sabemos que, de vez em quando, se expressar é sinônimo de provocar reflexão e instigar. Nosso papel é manter um ambiente acolhedor para todos os tipos de público e por isso temos algumas regras para projetos de conteúdo adulto. '
+      adult_content_description_click_more: 'Saiba o que pode e o que não pode'
+      is_adult_content_answer_choose: 'Escolha uma opção'
+      is_adult_content_answer_yes: 'Sim'
+      is_adult_content_answer_no: 'Não'
+      adult_content_can_title: '✅São permitidos:'
+      adult_content_can_text: '• Projetos de nudez ou temática sexual, reais ou ficcionais, com propósito artístico, jornalístico, educacional ou político. Os projetos precisam estar bem estruturados, de maneira a deixar claro as informações relevantes, e não podem fazer uso de cenas de sexo explícito nas áreas públicas de sua campanha - imagem da capa, imagens e vídeos na descrição e imagens em posts públicos.'
+      adult_content_cant_title: '🚫Não são permitidos:'
+      adult_content_cant_text: '• Projetos cujo objetivo principal é a oferta de material pornográfico ou erótico, em formatos de venda de pacotes ("packs") de conteúdo adulto com intuito de vender estímulos sexuais.<br><br>• Projetos que ofereçam serviços sexuais como recompensas e/ou que dêem acesso a grupos privados de compartilhamento de material pornográfico ou sessão de webcam erótica, em qualquer outra plataforma.<br><br>• Projetos que glorifiquem a violência sexual, como zoofilia, estupro, exploração e sexualização infantil ou fetiches sexuais como incesto, necrofilia ou de atos que sejam difíceis de distinguir do sexo não-consensual. Isso também é válido para ilustrações, animações ou qualquer outro tipo de criação.  <br>'
+      adult_content_more_info_link_text: 'Ainda em dúvidas se o seu projeto é permitido?'
+      adult_content_support_url: 'https://suporte.catarse.me/hc/pt-br/articles/360037450852'
       url: 'URL do projeto'
       url_label: 'É o endereço do seu projeto, deve ser fácil de memorizar. Evite underline, hífen e símbolos'
       category: 'Categoria'

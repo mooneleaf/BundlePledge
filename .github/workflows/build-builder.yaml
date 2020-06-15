@@ -1,0 +1,26 @@
+name: Build the builder
+on: 
+  push:
+    paths:
+    - 'infrastructure/builder/**'
+    - '.github/workflows/build-builder.yaml'
+    branches:
+    - develop
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2 
+    - name: Login to Dockerhub
+      uses: azure/docker-login@v1
+      with:
+        username: soapbubble
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build, tag, and push image
+      env:
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t soapbubble/aws-cloud-builder:$IMAGE_TAG -f infrastructure/builder/Dockerfile infrastructure/builder/
+        docker push soapbubble/aws-cloud-builder:$IMAGE_TAG

@@ -1,0 +1,34 @@
+name: Build Catarse for test environment
+on: 
+  pull_request:
+    branches:
+    - develop
+jobs:
+  build:
+    name: Build the builder
+    runs-on: ubuntu-latest
+    container: soapbubble/aws-cloud-builder:84aee74bf77e17b9e6de996817e546eacfbe573b
+    steps:    
+    - name: Checkout
+      uses: actions/checkout@v2 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Decrypt
+      run: |
+        sops -d infrastructure/kustomize/overlays/test-run/catarse-secrets.yaml > infrastructure/kustomize/overlays/test-run/catarse-secrets-dec.yaml
+        sops -d services/service-core-db/setup_fdw_grants.sql.enc > services/service-core-db/setup_fdw_grants.sql
+    - name: Build
+      env:
+        IMAGE_TAG: ${{ github.sha }}
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        export NPM_AUTH="@mooneleaf:registry=https://npm.pkg.github.com
+        //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}"
+        skaffold build -p test-run,test-db,test-catarse,test-migrations,test-prime,test-setup

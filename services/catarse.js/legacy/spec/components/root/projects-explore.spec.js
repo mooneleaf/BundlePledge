@@ -1,11 +1,13 @@
 import mq from 'mithril-query';
+import m from 'mithril';
 import projectsExplore from '../../../src/root/projects-explore';
 
 describe('ProjectsExplore', () => {
     let $output, project, component;
+    
 
     beforeAll(() => {
-        window.location.hash = '#by_category_id/1';
+        // window.onpopstate = function() {}        
 
         component = m(projectsExplore, { root: { getAttribute: (x) => { return null; }} });
         $output = mq(component);
@@ -17,21 +19,24 @@ describe('ProjectsExplore', () => {
 
     describe('view', () => {
 
-        let $outputWithSubscriptionsSelected, $outputWithAonFlexSelected;
+        let $outputWithSubscriptionsSelected, $outputWithAonFlexSelected, $outputAllModes;
 
         beforeAll(() => {
-            $outputWithSubscriptionsSelected = mq(m(projectsExplore, { filter: 'sub' }));
-            $outputWithAonFlexSelected = mq(m(projectsExplore, { filter: 'not_sub' }));
+            $outputAllModes = mq(m(projectsExplore));
+            $outputWithSubscriptionsSelected = mq(m(projectsExplore, { mode: 'sub', filter: 'all' }));
+            $outputWithAonFlexSelected = mq(m(projectsExplore, { mode: 'not_sub', filter: 'all' }));
+        });
+
+        it('should render explore with all modes', () => {  
+            expect($outputAllModes.contains('Todos os projetos')).toBeTrue();
         });
 
         it('should render explorer selecting subscriptions', () => {
             expect($outputWithSubscriptionsSelected.contains('Assinaturas')).toBeTrue();
-            expect($outputWithSubscriptionsSelected.find('.explore-mobile-label').length).toEqual(2);
         });
 
         it('should render explorer selecting aon and flex', () => {
             expect($outputWithAonFlexSelected.contains('Projetos pontuais')).toBeTrue();
-            expect($outputWithAonFlexSelected.contains('Populares')).toBeTrue();            
         });
     });
 });

@@ -1,15 +1,24 @@
 process.env.CHROME_BIN = require('puppeteer').executablePath()
 
+const webpack = require('./webpack.config');
+
+delete webpack['entry'];
+delete webpack['output'];
+delete webpack['plugins'];
+webpack['mode'] = 'production';
+
 module.exports = (config) => {
     config.set({
         basePath: '',
         frameworks: ['jasmine'],
         files: [
-            'legacy/spec/lib/jasmine-species/jasmine-grammar.js',
+            // 'legacy/spec/lib/jasmine-species/jasmine-grammar.js',
             'legacy/spec/lib/jasmine-matchers.js',
-            'legacy/spec/lib/jasmine-ajax/mock-ajax.js',
+            // 'legacy/spec/lib/jasmine-ajax/mock-ajax.js',
+            'node_modules/jasmine-ajax/lib/mock-ajax.js',
+            'node_modules/jasmine-species/jasmine-grammar.js',
             'legacy/spec/lib/i18n/i18n.js',
-            'legacy/spec/lib/matchers.js',
+            // 'legacy/spec/lib/matchers.js',
             'legacy/spec/lib/analytics.js',
             'node_modules/mithril/mithril.js',
             'node_modules/underscore/underscore.js',
@@ -28,10 +37,7 @@ module.exports = (config) => {
             'legacy/spec/**/*.spec.js': ['webpack'],
             'legacy/spec/index.spec.js': ['webpack']
         },
-        webpack: {
-            // mode: 'development'
-            mode: 'production'
-        },
+        webpack,
         exclude: [],
         reporters: ['spec'],
         port: 9876,
