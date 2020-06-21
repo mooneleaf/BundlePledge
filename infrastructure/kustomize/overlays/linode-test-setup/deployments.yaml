@@ -1,0 +1,26 @@
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fdw-settings
+spec:
+  template:
+    spec:
+      containers:
+        - name: fdw-settings
+          image: docker.bundlepledge.com/catarse-deploy/catarse
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: demo-settings
+spec:
+  template:
+    spec:
+      containers:
+        - name: demo-settings
+          image: docker.bundlepledge.com/catarse-deploy/catarse
+      imagePullSecrets:
+        - name: regcred

@@ -1,0 +1,104 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: common-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: common-api
+          image: docker.bundlepledge.com/catarse-deploy/common-api
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: common-docs
+spec:
+  template:
+    spec:
+      containers:
+        - name: common-docs
+          image: docker.bundlepledge.com/catarse-deploy/common-docs
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: common-proxy
+spec:
+  template:
+    spec:
+      containers:
+        - name: common-proxy
+          image: docker.bundlepledge.com/catarse-deploy/common-proxy
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hook-service-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: hook-service-api
+          image: docker.bundlepledge.com/catarse-deploy/hook-service-api
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-dispatcher
+spec:
+  template:
+    spec:
+      containers:
+        - name: notification-dispatcher
+          image: docker.bundlepledge.com/catarse-deploy/notification-dispatcher
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-stream-processor
+spec:
+  template:
+    spec:
+      containers:
+        - name: payment-stream-processor
+          image: docker.bundlepledge.com/catarse-deploy/payments
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommender-service-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: recommender-service-api
+          image: docker.bundlepledge.com/catarse-deploy/recommender-service-api
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscriptions-scheduler
+spec:
+  template:
+    spec:
+      containers:
+        - name: subscriptions-scheduler
+          image: docker.bundlepledge.com/catarse-deploy/payments
+      imagePullSecrets:
+        - name: regcred

@@ -1,0 +1,13 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catarse
+spec:
+  template:
+    spec:
+      containers:
+        - name: catarse
+          image: docker.bundlepledge.com/catarse-deploy/catarse
+      imagePullSecrets:
+        - name: regcred
