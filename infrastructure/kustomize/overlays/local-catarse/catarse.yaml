@@ -45,9 +45,9 @@ spec:
                 configMapKeyRef:
                   key: RAILS_ENV
                   name: catarse-env
-            - name: SECRET_KEY
+            - name: SECRET_KEY_BASE
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   key: SECRET_KEY
                   name: catarse-secrets
             - name: BUNDLE_SITE_URL

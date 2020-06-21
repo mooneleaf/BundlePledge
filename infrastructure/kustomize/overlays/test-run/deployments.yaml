@@ -31,6 +31,12 @@ spec:
       containers:
         - name: common-proxy
           image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/common-proxy
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DB_PASSWORD
+                  name: catarse-secrets
 ---
 apiVersion: apps/v1
 kind: Deployment

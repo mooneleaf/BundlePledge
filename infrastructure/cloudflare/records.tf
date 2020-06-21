@@ -16,3 +16,12 @@ resource "cloudflare_record" "bundle_pledge" {
   ttl     = 1
   proxied = true
 }
+
+resource "cloudflare_record" "www_bundle_pledge" {
+  zone_id = cloudflare_zone.bundle_pledge.id
+  name    = "www"
+  value   = var.ingress-ip
+  type    = "A"
+  ttl     = 1
+  proxied = true
+}

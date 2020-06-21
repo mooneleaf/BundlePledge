@@ -62,11 +62,6 @@ spec:
                 configMapKeyRef:
                   key: DB_NAME
                   name: common-proxy-env
-            - name: DB_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  key: DB_PASSWORD
-                  name: common-proxy-env
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:

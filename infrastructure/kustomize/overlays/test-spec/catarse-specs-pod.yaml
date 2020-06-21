@@ -11,7 +11,7 @@ spec:
     - run_specs
     env:
     - name: DATABASE_URL
-      value: postgres://catarse:example@localhostcatarse:5432/catarse_db_test
+      value: postgres://catarse:example@catarse-db:5432/catarse_db_test
     - name: RAILS_ENV
       value: test
     - name: REDIS_URL
