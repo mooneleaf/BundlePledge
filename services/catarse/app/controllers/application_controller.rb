@@ -121,9 +121,10 @@ class ApplicationController < ActionController::Base
   end
 
   def force_www
-    if request.subdomain.blank? && Rails.env.production?
-      redirect_to request.original_url.gsub(/^https?\:\/\//, 'https://www.')
-    end
+    # not a fan
+    # if request.subdomain.blank? && Rails.env.production?
+    #   redirect_to request.original_url.gsub(/^https?\:\/\//, 'https://www.')
+    # end
   end
 
   def detect_old_browsers

@@ -2,6 +2,14 @@
 set -e
 set -x
 
+
+sops -d infrastructure/kustomize/overlays/test-db/secrets.enc.yaml > infrastructure/kustomize/overlays/test-db/secrets.yaml
+sops -d services/service-core-db/setup_fdw_grants.sql.enc > services/service-core-db/setup_fdw_grants.sql
+dbpasswd=$(yq r infrastructure/kustomize/overlays/test-db/secrets.yaml data.DB_PASSWORD | base64 -d | tr -d '\n')
+export POSTGREST_USER_PASSWORD=$dbpasswd
+export PROXY_USER_PASSWORD=$dbpasswd
+export CATARSE_FDW_USER_PASSWORD=$dbpasswd
+
 # Build catarse.js
 cd services/catarse.js
 yarn

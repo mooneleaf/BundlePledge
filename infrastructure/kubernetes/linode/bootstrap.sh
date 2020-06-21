@@ -43,14 +43,13 @@ cd ../kubernetes/linode
 cd docker-registry
 kubectl create ns docker-registry
 sops -d secrets.enc.yaml | kubectl apply -f -
-kubectl -n docker-registry get secret/docker-registry-secret -o json | jq -r .data.htpasswd | base64 -d
 helm repo add stable https://kubernetes-charts.storage.googleapis.com
 helm install docker-registry stable/docker-registry --values values.yaml --namespace docker-registry \
-  --set secrets.htpasswd=$(kubectl -n docker-registry get secret/docker-registry-secret-prime -o json | jq -r .data.htpasswd | base64 -d) \
-  --set secrets.haSharedSecret=$(kubectl -n docker-registry get secret/docker-registry-secret-prime -o json | jq -r .data.haSharedSecret | base64 -d)
+  --set secrets.htpasswd=$(kubectl -n docker-registry get secret/docker-registry-secret-prime -o json | jq -r .data.htpasswd | base64 -d | tr -d '\n') \
+  --set secrets.haSharedSecret=$(kubectl -n docker-registry get secret/docker-registry-secret-prime -o json | jq -r .data.haSharedSecret | base64 -d | tr -d '\n')
 kubectl -n catarse create secret docker-registry regcred \
   --docker-server=docker.bundlepledge.com --docker-username=root \
-  --docker-password=$(kubectl -n docker-registry get secret/docker-registry-secret-prime -o json | jq -r .data.password | base64 -d) \
+  --docker-password=$(kubectl -n docker-registry get secret/docker-registry-secret-prime -o json | jq -r .data.password | base64 -d | tr -d '\n') \
   --docker-email=null@example.com
 cd ..
 

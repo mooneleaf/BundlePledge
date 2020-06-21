@@ -16,7 +16,15 @@ spec:
             backend:
               serviceName: "catarse"
               servicePort: 3000
+    - host: www.bundlepledge.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: "catarse"
+              servicePort: 3000
   tls:
     - hosts:
       - bundlepledge.com
+      - www.bundlepledge.com
       secretName: bundle-pledge-catarse-tls
