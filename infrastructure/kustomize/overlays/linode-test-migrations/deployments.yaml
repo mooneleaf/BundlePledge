@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: catarse-migrations
+spec:
+  template:
+    spec:
+      containers:
+        - name: catarse-migrations
+          image: docker.bundlepledge.com/catarse-deploy/catarse
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrations
+spec:
+  template:
+    spec:
+      containers:
+        - name: migrations
+          image: docker.bundlepledge.com/catarse-deploy/migrations
+      imagePullSecrets:
+        - name: regcred

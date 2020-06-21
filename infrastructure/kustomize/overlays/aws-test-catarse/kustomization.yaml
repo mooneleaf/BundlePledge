@@ -1,3 +1,4 @@
+namespace: catarse
 base:
   -- ../test-run
 resources:

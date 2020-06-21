@@ -3,15 +3,20 @@ kind: Ingress
 metadata:
   name: catarse
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
   labels:
     app: catarse
 spec:
   rules:
-    - http:
+    - host: bundlepledge.com
+      http:
         paths:
-          - path: /*
+          - path: /
             backend:
               serviceName: "catarse"
               servicePort: 3000
+  tls:
+    - hosts:
+      - bundlepledge.com
+      secretName: bundle-pledge-catarse-tls

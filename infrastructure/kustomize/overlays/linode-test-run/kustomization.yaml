@@ -2,4 +2,5 @@ bases:
   - ../test-run
 patchesStrategicMerge:
   - pvc.yaml
-  
+  - deployments.yaml
+namespace: catarse

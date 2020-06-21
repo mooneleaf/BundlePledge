@@ -1,3 +1,4 @@
+namespace: catarse
 bases:
   - ../../base
 resources:
@@ -6,7 +7,6 @@ resources:
   - catarse-api-env-configmap.yaml
   - catarse-moment-service-api-env-configmap.yaml
   - catarse-redis-data-persistentvolumeclaim.yaml
-  - catarse-secrets-dec.yaml
   - common-api-env-configmap.yaml
   - community-service-api-env-configmap.yaml
   - dispatcher-redis-data-persistentvolumeclaim.yaml
