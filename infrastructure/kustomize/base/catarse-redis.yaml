@@ -53,8 +53,8 @@ metadata:
   name: catarse-redis
 spec:
   ports:
-  - port: 3000
-    targetPort: 3000
+  - port: 6379
+    targetPort: 6379
   selector:
     io.kompose.service: catarse-redis
 status:
