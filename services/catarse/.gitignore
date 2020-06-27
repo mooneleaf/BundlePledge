@@ -33,5 +33,4 @@ node_modules/
 *.env
 public/sitemap.xml.gz
 config/secrets.yml
-deps-patch.json
-.npmrc
+app/assets/

@@ -22,9 +22,7 @@ profiles:
       - image: catarse-deploy/catarse
         context: ./services/catarse/
         docker:
-          buildArgs:
-            NPM_AUTH: '{{ .NPM_AUTH }}'
-          dockerfile: ./dev.Dockerfile  
+          dockerfile: ./Dockerfile  
       - image: catarse-deploy/recommender-service-api
         context: ./services/catarse_recommender/
         docker:
@@ -50,9 +48,7 @@ profiles:
       - image: catarse-deploy/catarse
         context: ./services/catarse/
         docker:
-          buildArgs:
-            NPM_AUTH: '{{ .NPM_AUTH }}'
-          dockerfile: ./dev.Dockerfile        
+          dockerfile: ./Dockerfile        
       - image: catarse-deploy/migrations
         context: ./services/service-core-db/
         docker:
@@ -66,10 +62,23 @@ profiles:
         - image: catarse-deploy/catarse
           context: ./services/catarse/
           docker:
-            network: 'host'
-            buildArgs:
-              NPM_AUTH: '{{ .NPM_AUTH }}'
-            dockerfile: ./dev.Dockerfile  
+            dockerfile: ./Dockerfile  
+        - image: catarse-local/webpack-dev-server
+          context: ./services/catarse.js
+          docker:
+            dockerfile: ./local.Dockerfile
+          sync:
+            infer:
+              - 'legacy/**'
+              - '.babelrc'
+              - '.eslintrc.js'
+              - '.flowconfig'
+              - '.jscsrc'
+              - '.jshintignore'
+              - 'package.json'
+              - 'yarn.lock'
+              - 'webpack.config.js'
+                
     deploy:
       kustomize:
         path: infrastructure/kustomize/overlays/local-catarse
@@ -126,9 +135,7 @@ profiles:
           context: ./services/catarse/
           docker:
             network: 'host'
-            buildArgs:
-              NPM_AUTH: '{{ .NPM_AUTH }}'
-            dockerfile: ./dev.Dockerfile 
+            dockerfile: ./Dockerfile 
     deploy:
       kustomize:
         path: infrastructure/kustomize/overlays/local-setup       
@@ -192,16 +199,10 @@ profiles:
       - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/catarse
         context: ./services/catarse/
         docker:
-          buildArgs:
-            NPM_AUTH: '{{ .NPM_AUTH }}'
           dockerfile: ./Dockerfile        
       - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/migrations
         context: ./services/service-core-db/
         docker:
-          buildArgs: 
-            POSTGREST_USER_PASSWORD: '{{ .POSTGREST_USER_PASSWORD }}'
-            PROXY_USER_PASSWORD: '{{ .PROXY_USER_PASSWORD }}'
-            CATARSE_FDW_USER_PASSWORD: '{{ .CATARSE_FDW_USER_PASSWORD }}'
           dockerfile: ./Dockerfile     
     deploy:
       kustomize:
@@ -212,8 +213,6 @@ profiles:
       - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/catarse
         context: ./services/catarse/
         docker:
-          buildArgs:
-            NPM_AUTH: '{{ .NPM_AUTH }}'
           dockerfile: ./Dockerfile  
     deploy:
       kustomize:
@@ -227,7 +226,6 @@ profiles:
             dockerfile: ./Dockerfile.catarse-db      
             buildArgs: 
               POSTGREST_USER_PASSWORD: '{{ .POSTGREST_USER_PASSWORD }}'
-              PROXY_USER_PASSWORD: '{{ .PROXY_USER_PASSWORD }}'
               CATARSE_FDW_USER_PASSWORD: '{{ .CATARSE_FDW_USER_PASSWORD }}'
         - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/moments-db
           context: ./services/service-core-db/
@@ -235,7 +233,6 @@ profiles:
             dockerfile: ./Dockerfile.moments-db
             buildArgs: 
               POSTGREST_USER_PASSWORD: '{{ .POSTGREST_USER_PASSWORD }}'
-              PROXY_USER_PASSWORD: '{{ .PROXY_USER_PASSWORD }}'
               CATARSE_FDW_USER_PASSWORD: '{{ .CATARSE_FDW_USER_PASSWORD }}'
         - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/core-db
           context: ./services/service-core-db/
@@ -282,9 +279,144 @@ profiles:
         - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/catarse
           context: ./services/catarse/
           docker:
-            buildArgs:
-              NPM_AUTH: '{{ .NPM_AUTH }}'
             dockerfile: ./Dockerfile 
     deploy:
       kustomize:
         path: infrastructure/kustomize/overlays/test-setup         
+
+  - name: linode-test-run
+    build:
+      artifacts:
+      - image: docker.bundlepledge.com/catarse-deploy/catarse-db
+        context: ./services/service-core-db/
+        docker:
+          dockerfile: ./Dockerfile.db       
+      - image: docker.bundlepledge.com/catarse-deploy/moments-db
+        context: ./services/service-core-db/
+        docker:
+          dockerfile: ./Dockerfile.db
+      - image: docker.bundlepledge.com/catarse-deploy/core-db
+        context: ./services/service-core-db/
+        docker:
+          dockerfile: ./Dockerfile.db
+      - image: docker.bundlepledge.com/catarse-deploy/notification-dispatcher
+        context: ./services/notification-service-api/
+        docker:
+          dockerfile: ./Dockerfile
+      - image: docker.bundlepledge.com/catarse-deploy/payments
+        context: ./services/payment-service-api/
+        docker:
+          dockerfile: ./Dockerfile
+      - image: docker.bundlepledge.com/catarse-deploy/hook-service-api
+        context: ./services/hook-service-api/
+        docker:
+          dockerfile: ./Dockerfile
+      - image: docker.bundlepledge.com/catarse-deploy/recommender-service-api
+        context: ./services/catarse_recommender/
+        docker:
+          dockerfile: ./catarse_recommender/Dockerfile 
+      - image: docker.bundlepledge.com/catarse-deploy/common-docs
+        context: ./services/common/
+        docker:
+          dockerfile: ./Dockerfile 
+      - image: docker.bundlepledge.com/catarse-deploy/common-proxy
+        context: ./services/proxy/
+        docker:
+          dockerfile: ./Dockerfile 
+      - image: docker.bundlepledge.com/catarse-deploy/common-api
+        context: ./services/common-api/
+        docker:
+          dockerfile: ./Dockerfile         
+    deploy:
+      kustomize:
+        path: infrastructure/kustomize/overlays/linode-test-run
+  - name: linode-test-migrations
+    build:
+      artifacts:
+      - image: docker.bundlepledge.com/catarse-deploy/catarse
+        context: ./services/catarse/
+        docker:
+          dockerfile: ./Dockerfile        
+      - image: docker.bundlepledge.com/catarse-deploy/migrations
+        context: ./services/service-core-db/
+        docker:
+          dockerfile: ./Dockerfile     
+    deploy:
+      kustomize:
+        path: infrastructure/kustomize/overlays/linode-test-migrations
+  - name: linode-test-catarse
+    build:
+      artifacts:
+      - image: docker.bundlepledge.com/catarse-deploy/catarse
+        context: ./services/catarse/
+        docker:
+          dockerfile: ./Dockerfile  
+    deploy:
+      kustomize:
+        path: infrastructure/kustomize/overlays/linode-test-catarse
+  - name: linode-test-db-init
+    build:
+      artifacts:
+        - image: docker.bundlepledge.com/catarse-deploy/catarse-db
+          context: ./services/service-core-db/
+          docker:
+            dockerfile: ./Dockerfile.catarse-db      
+            buildArgs: 
+              POSTGREST_USER_PASSWORD: '{{ .POSTGREST_USER_PASSWORD }}'
+              CATARSE_FDW_USER_PASSWORD: '{{ .CATARSE_FDW_USER_PASSWORD }}'
+        - image: docker.bundlepledge.com/catarse-deploy/moments-db
+          context: ./services/service-core-db/
+          docker:
+            dockerfile: ./Dockerfile.moments-db
+            buildArgs: 
+              POSTGREST_USER_PASSWORD: '{{ .POSTGREST_USER_PASSWORD }}'
+              CATARSE_FDW_USER_PASSWORD: '{{ .CATARSE_FDW_USER_PASSWORD }}'
+        - image: docker.bundlepledge.com/catarse-deploy/core-db
+          context: ./services/service-core-db/
+          docker:
+            dockerfile: ./Dockerfile.service_core-db
+            buildArgs: 
+              POSTGREST_USER_PASSWORD: '{{ .POSTGREST_USER_PASSWORD }}'
+              PROXY_USER_PASSWORD: '{{ .PROXY_USER_PASSWORD }}'
+              CATARSE_FDW_USER_PASSWORD: '{{ .CATARSE_FDW_USER_PASSWORD }}'
+    deploy:
+      kustomize:
+        path: infrastructure/kustomize/overlays/linode-test-db
+  - name: linode-test-db
+    build:
+      artifacts:
+        - image: docker.bundlepledge.com/catarse-deploy/catarse-db
+          context: ./services/service-core-db/
+          docker:
+            dockerfile: ./Dockerfile.db    
+        - image: docker.bundlepledge.com/catarse-deploy/moments-db
+          context: ./services/service-core-db/
+          docker:
+            dockerfile: ./Dockerfile.db
+        - image: docker.bundlepledge.com/catarse-deploy/core-db
+          context: ./services/service-core-db/
+          docker:
+            dockerfile: ./Dockerfile.db
+    deploy:
+      kustomize:
+        path: infrastructure/kustomize/overlays/linode-test-db
+  - name: linode-test-prime
+    build:
+      artifacts:
+        - image: docker.bundlepledge.com/catarse-deploy/core-db
+          context: ./services/service-core-db/
+          docker:
+            dockerfile: ./Dockerfile.service_core-db
+    deploy:
+      kustomize:
+        path: infrastructure/kustomize/overlays/linode-test-prime
+  - name: linode-test-setup
+    build:
+      artifacts:
+        - image: docker.bundlepledge.com/catarse-deploy/catarse
+          context: ./services/catarse/
+          docker:
+            dockerfile: ./Dockerfile 
+    deploy:
+      kustomize:
+        path: infrastructure/kustomize/overlays/linode-test-setup         

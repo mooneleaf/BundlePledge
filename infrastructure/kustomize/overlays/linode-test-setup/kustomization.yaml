@@ -1,0 +1,5 @@
+bases:
+  - ../test-setup
+patchesStrategicMerge:
+  - deployments.yaml
+namespace: catarse

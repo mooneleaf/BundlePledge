@@ -1,3 +1,4 @@
+namespace: catarse
 resources:
   - catarse-migrations-pod.yaml
   - migrations-pod.yaml

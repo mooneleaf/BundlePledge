@@ -33,6 +33,11 @@ spec:
           env:
             - name: DATABASE_URL
               value: postgres://catarse:example@catarse-db:5432/catarse_db
+            - name: WEBPACK_DEV_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  key: WEBPACK_DEV_SERVER
+                  name: catarse-env
             - name: REDIS_URL
               value: redis://catarse-redis:6379
             - name: RAILS_ENV
@@ -40,9 +45,9 @@ spec:
                 configMapKeyRef:
                   key: RAILS_ENV
                   name: catarse-env
-            - name: SECRET_KEY
+            - name: SECRET_KEY_BASE
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   key: SECRET_KEY
                   name: catarse-secrets
             - name: BUNDLE_SITE_URL

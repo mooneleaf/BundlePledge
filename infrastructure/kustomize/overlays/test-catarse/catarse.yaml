@@ -27,6 +27,8 @@ spec:
             - -b
             - 0.0.0.0
           env:
+            - name: DEPLOYMENT
+              value: "production"
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -39,11 +41,11 @@ spec:
                 configMapKeyRef:
                   key: RAILS_ENV
                   name: catarse-env
-            - name: SECRET_KEY
+            - name: SECRET_KEY_BASE
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   key: SECRET_KEY
-                  name: catarse-env
+                  name: catarse-secrets
             - name: BUNDLE_SITE_URL
               valueFrom:
                 configMapKeyRef:
@@ -74,10 +76,8 @@ metadata:
     io.kompose.service: catarse
   name: catarse
 spec:
-  type: NodePort
   ports:
-  - name: "3000"
-    port: 3000
+  - port: 3000
   selector:
     io.kompose.service: catarse
 status:

@@ -1,0 +1,5 @@
+bases:
+  - ../test-migrations
+patchesStrategicMerge:
+  - deployments.yaml
+namespace: catarse
