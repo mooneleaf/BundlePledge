@@ -8,8 +8,10 @@ class Payment < ActiveRecord::Base
   delegate :user, :project, :invalid_refund, :notify_to_backoffice, :is_donation?, :anonymous, to: :contribution
 
   belongs_to :contribution
+  has_one :antifraud_analysis
   has_many :payment_notifications # to keep compatibility with catarse_pagarme
   has_many :payment_transfers
+  has_many :gateway_payables
 
   validates_presence_of :state, :key, :gateway, :payment_method, :value, :installments, :contribution_id
   validate :value_should_be_equal_or_greater_than_pledge
@@ -22,6 +24,11 @@ class Payment < ActiveRecord::Base
     where('payments.slip_expires_at + \'3 days\'::interval < current_timestamp and payment_method = \'BoletoBancario\' and state = \'pending\'')
   }
 
+  scope :with_missing_payables, lambda {
+    joins('LEFT JOIN gateway_payables gp ON gp.payment_id = payments.id')
+      .where(gateway: 'Pagarme', state: %w[paid chargedback refunded])
+      .where('gp.id IS NULL')
+  }
   def self.slip_expiration_weekdays
     connection.select_one('SELECT public.slip_expiration_weekdays()')['slip_expiration_weekdays'].to_i
   end

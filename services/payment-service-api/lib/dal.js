@@ -307,6 +307,36 @@ const generateDalContext = (client) => {
         return await findSubscription(subscriptionId);
     };
 
+    const insertAntifraudAnalysis = async (paymentId, data) => {
+        const query = `
+            insert into
+                payment_service.antifraud_analyses(catalog_payment_id, data, cost)
+            VALUES(
+                $1,
+                $2,
+                (SELECT value::numeric FROM core.core_settings WHERE name = 'antifraud_cost')
+            )
+        `
+        return await client.query(query, [paymentId, data])
+    };
+
+    const getPaymentsWithMissingPayables = async () => {
+        const query = `
+            SELECT
+                id,
+                gateway_cached_data -> 'transaction' ->> 'id' AS gateway_id
+            FROM
+                payment_service.catalog_payments cp
+            WHERE
+                jsonb_array_length(COALESCE(gateway_general_data ->> 'payables', '[]')::jsonb) = 0
+                AND status IN ('paid', 'chargedback', 'refunded')
+            ORDER BY
+                created_at DESC
+        `
+
+        return await client.query(query)
+    }
+
     return {
         findCard,
         findPayment,
@@ -321,6 +351,8 @@ const generateDalContext = (client) => {
         notificationServiceNotify,
         paymentTransitionTo,
         subscriptionTransitionTo,
+        insertAntifraudAnalysis,
+        getPaymentsWithMissingPayables
     }
 };
 
