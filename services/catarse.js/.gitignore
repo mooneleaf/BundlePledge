@@ -33,3 +33,5 @@ spec/bundle.spec.js
 .python-version
 .node-version
 .npmrc
+
+dist
