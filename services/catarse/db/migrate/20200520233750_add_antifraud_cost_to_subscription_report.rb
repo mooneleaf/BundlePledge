@@ -1,8 +1,7 @@
 class AddAntifraudCostToSubscriptionReport < ActiveRecord::Migration
   def up
     execute <<-SQL
-      DROP VIEW public.subscription_monthly_report_for_project_owners;
-      CREATE VIEW public.subscription_monthly_report_for_project_owners AS
+      CREATE OR REPLACE VIEW public.subscription_monthly_report_for_project_owners AS
         SELECT s.project_id,
         u.name,
         u.public_name,
@@ -76,8 +75,7 @@ class AddAntifraudCostToSubscriptionReport < ActiveRecord::Migration
 
   def down
     execute <<-SQL
-      DROP VIEW public.subscription_monthly_report_for_project_owners;
-      CREATE VIEW public.subscription_monthly_report_for_project_owners AS
+      CREATE OR REPLACE VIEW public.subscription_monthly_report_for_project_owners AS
         SELECT s.project_id,
         u.name,
         u.public_name,
