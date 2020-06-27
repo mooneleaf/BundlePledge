@@ -1,5 +1,5 @@
 {
-    "name": "@soapbubble/catarse.js",
+    "name": "catarse.js",
     "version": "1.0.38",
     "author": "Diogo Biazus",
     "browserslist": "> 0.25%, not dead",

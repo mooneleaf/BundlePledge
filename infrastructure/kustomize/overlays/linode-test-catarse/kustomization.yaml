@@ -1,0 +1,8 @@
+
+bases:
+  - ../test-catarse
+resources:
+  - ingress.yaml
+patchesStrategicMerge:
+  - deployments.yaml
+namespace: catarse

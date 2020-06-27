@@ -1,0 +1,5 @@
+namespace: catarse
+base:
+  -- ../test-run
+resources:
+  - ingress.yaml

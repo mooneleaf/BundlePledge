@@ -1,0 +1,6 @@
+bases:
+  - ../test-db
+patchesStrategicMerge:
+  - pvc.yaml
+  - deployments.yaml
+namespace: catarse

@@ -1,0 +1,22 @@
+ingress:
+  enabled: true
+  hosts:
+    - docker.bundlepludge.com
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "30720m"
+  tls:
+    - secretName: docker-registry-prod
+      hosts:
+        - docker.bundlepludge.com
+
+storage: filesystem
+persistence:
+  enabled: true
+  size: 60Gi
+  storageClass: linode-block-storage
+
+image:
+  repository: soapbubble/registry
+  tag: dev

@@ -1,3 +1,4 @@
+namespace: catarse
 resources:
   - catarse-demo-settings.yaml
   - catarse-fdw-settings.yaml

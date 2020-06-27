@@ -19,7 +19,6 @@ COPY Gemfile /usr/app/
 COPY Gemfile.lock /usr/app/
 #
 RUN bundle install
-RUN echo "${NPM_AUTH}" > ./.npmrc
 COPY package*json ./
 RUN npm install
 

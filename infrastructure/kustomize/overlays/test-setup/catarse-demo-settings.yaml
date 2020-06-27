@@ -17,6 +17,13 @@ spec:
               value: development
             - name: REDIS_URL
               value: redis://catarse-redis:6379
+            - name: REWRITE_ALL
+              value: "true"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DB_PASSWORD
+                  name: catarse-secrets
           image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/catarse
           command:
             - bundle

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: catarse-redis-data
+spec:
+  storageClassName: linode-block-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dispatcher-redis-data
+spec:
+  storageClassName: linode-block-storage
+  
