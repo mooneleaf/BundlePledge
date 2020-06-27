@@ -53,9 +53,9 @@ skaffold run -p local-setup
 Wait for migrations job to re-run and be succesful. To check the status of the migration run 
 ```
 kubectl logs job/catarse-migrations
-```. 
+```.
 
-Run catarse:
+Run catarse: 
 ```
 skaffold dev -p local-catarse --port-forward
 ```

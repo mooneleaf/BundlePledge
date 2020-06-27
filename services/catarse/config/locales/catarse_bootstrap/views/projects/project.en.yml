@@ -16,8 +16,7 @@ en:
           image: https://s3.amazonaws.com/cdn.catarse/assets/banner-home-fctodos.jpg
         1:
           title: <img src="https://daks2k3a4ib2z.cloudfront.net/573a70f6d5c3cb6532f8b1a7/59c3980fd03bd6000107e99c_logo-assinaturas.png" width="400">
-          subtitle: Connect with your fans and receive payments every month on our
-            recurring funding platform.
+          subtitle: Connect with your fans and receive payments every month on our recurring funding platform.
           link: https://crowdfunding.catarse.me/subscriptions?utm_source=catarse&amp;utm_medium=banner_home_1&amp;utm_campaign=qualified_leads_from_home
           cta: know more
           image: https://s3.amazonaws.com/cdn.catarse/assets/banner-home-assinaturas.jpg
