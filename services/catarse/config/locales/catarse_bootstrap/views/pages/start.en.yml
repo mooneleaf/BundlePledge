@@ -1,12 +1,11 @@
 en:
   pages:
     start:
-      header_html: Catarse - Take your design out of paper
-      description: The Catarse is the first and largest crowdfunding platform, or
-        collective financing, in Brazil. Come and take projects from paper!
+      header_html: BundlePledge - Fund your RPG idea
+      description: BundlePledge is raising money for RPG projects
       title: Finance your project collectively
-      tagline: Crowdfunding and collective financing in Brazil is not Catarse
-      page-title: How does cataract work?
+      tagline: BundlePledge - RPG Crowdfunding for bundle bargain prices
+      page-title: How does BundlePledge work?
       page-subtitle: Know the basic pillars of a collective financing campaign
       submit: Get started for free
       learn-more: know more
@@ -21,7 +20,7 @@ en:
         3: Rewards
         4: It&#39;s what you offer in exchange for the supports.
         5: Goal
-        6: How much do you want to collect on Catarse.
+        6: How much do you want to collect on BundlePledge.
         7: Time
         8: This is the period when your campaign will be open to receiving support.
       features:

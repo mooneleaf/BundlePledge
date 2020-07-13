@@ -1550,7 +1550,7 @@ a:hover {
   margin-top: 30px;
 }
 
-.header-logo {
+.header-logo, .header-logo a {
   position: relative;
   display: inline-block;
   width: 100px;
@@ -1558,6 +1558,10 @@ a:hover {
   float: left;
   -webkit-transition: all 500ms ease;
   transition: all 500ms ease;
+  color: white;
+  font-family: heebo-900, sans-serif;
+  font-size: 20px;
+
 }
 
 .header-logo:hover {

@@ -139,7 +139,7 @@ const press = {
                             ])
                         ),
                         m('.w-col.w-col-3',
-                            m('a.btn.btn-dark.btn-large.u-marginbottom-10[href=\'http://blog.catarse.me/\'][target=\'_blank\']', [
+                            m('a.btn.btn-dark.btn-large.u-marginbottom-10[href=\'http://beyondthebundle.com/\'][target=\'_blank\']', [
                                 m('span.fa.fa-rss'),
                                 ' Blog do Catarse'
                             ])

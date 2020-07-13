@@ -16,3 +16,15 @@ pt:
         update_email: ' alterar e-mail'
         your_email: 'Seu e-mail de cadastro é: '
         total: 'Saldo'
+        settings: 'Configurações'
+      admin:
+        banners: 'Faixas'
+        users: 'Usuários'
+        support: Apoios
+        withdrawals: Saques
+        financial_reports: 'Rel. Financeiros'
+        admin_projects: Admin projetos
+        admin_subscriptions: Admin assinaturas
+        admin_notifications: Admin notificações
+
+

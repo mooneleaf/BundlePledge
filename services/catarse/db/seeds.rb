@@ -50,7 +50,7 @@ puts 'Seeding the database...'
 
 {
   company_name: 'Catarse',
-  company_logo: 'http://catarse.me/assets/catarse_bootstrap/logo_icon_catarse.png',
+  company_logo: 'http://catarse.me/assets/catarse_bootstrap/logo_icon_bpledge.png',
   host: 'catarse.me',
   base_url: "http://catarse.me",
 
@@ -73,9 +73,9 @@ puts 'Seeding the database...'
   feedback_url: 'http://suporte.catarse.me/forums/103171-catarse-ideias-gerais',
   terms_url: 'http://suporte.catarse.me/knowledgebase/articles/161100-termos-de-uso',
   privacy_url: 'http://suporte.catarse.me/knowledgebase/articles/161103-pol%C3%ADtica-de-privacidade',
-  about_channel_url: 'http://blog.catarse.me/conheca-os-canais-do-catarse/',
+  about_channel_url: 'http://beyondthebundle.com/conheca-os-canais-do-catarse/',
   instagram_url: 'http://instagram.com/catarse_',
-  blog_url: "http://blog.catarse.me",
+  blog_url: "http://beyondthebundle.com",
   github_url: 'http://github.com/catarse',
   contato_url: 'http://suporte.catarse.me/',
   fdw_user: 'postgres'

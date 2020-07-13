@@ -16,3 +16,15 @@ en:
         update_email: Change e-mail
         your_email: 'Your e-mail address is:'
         total: Balance
+        settings: Settings
+      admin:
+        banners: Banners
+        users: Users
+        support: Support
+        withdrawals: Withdrawals
+        financial_reports: Financial reports
+        admin_projects: Admin projects
+        admin_subscriptions: Admin subscriptions
+        admin_notifications: Admin notifications
+
+

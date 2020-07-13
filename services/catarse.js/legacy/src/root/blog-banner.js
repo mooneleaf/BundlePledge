@@ -21,11 +21,11 @@ const blogBanner = {
                 [
                     m('.u-text-center',
                         [
-                            m('a[href=\'http://blog.catarse.me\'][target=\'blank\']',
+                            m('a[href=\'http://beyondthebundle.com\'][target=\'blank\']',
                                 m('img.u-marginbottom-10[alt=\'Icon blog\'][src=\'/assets/icon-blog.png\']')
                             ),
                             m('.fontsize-large.u-marginbottom-60.text-success',
-                                m('a.link-hidden-success[href=\'http://blog.catarse.me\'][target=\'__blank\']',
+                                m('a.link-hidden-success[href=\'http://beyondthebundle.com\'][target=\'__blank\']',
                                     I18n.t('blog', I18nScope())
                                 )
                             )

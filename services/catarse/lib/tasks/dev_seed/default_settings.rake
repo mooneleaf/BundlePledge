@@ -54,7 +54,7 @@ namespace :dev_seed do
     puts "===== setting demo settings ====="
     catarse = {
       company_name: 'Demo Catarse',
-      company_logo: 'http://catarse.me/assets/catarse_bootstrap/logo_icon_catarse.png',
+      company_logo: 'http://catarse.me/assets/catarse_bootstrap/logo_icon_bpledge.png',
       host: 'localhost:3000',
       base_url: "http://localhost:3000",
 
