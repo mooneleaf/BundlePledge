@@ -35,5 +35,5 @@ kubectl delete job/catarse-migrations
 skaffold run -p local-migrations
 kubectl wait --for=condition=complete job/catarse-migrations
 skaffold run -p local-db
-skaffold run -p local-run
+skaffold run -p local-run --status-check=false
 skaffold run -p local-catarse

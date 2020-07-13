@@ -339,7 +339,7 @@ en:
         reward_sold_out: That reward is exhausted. Start new contribution.
         page-title: Support %{name}
         credits_preview_html: "You have <strong> %{credits}</strong> in credits to
-          make this contribution <strong>until 10/11</strong> , according to <a href='http://blog.catarse.me/simplificacao-dos-reembolsos-e-o-fim-dos-creditos/'
+          make this contribution <strong>until 10/11</strong> , according to <a href='http://beyondthebundle.com/simplificacao-dos-reembolsos-e-o-fim-dos-creditos/'
           target='__blank'>new rules</a> divulged by Catarse."
         credits_submit: Make the payment
         credits_title: Payment with credits

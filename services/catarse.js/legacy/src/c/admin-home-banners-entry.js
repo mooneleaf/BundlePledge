@@ -16,18 +16,18 @@ export const AdminHomeBannersEntry = {
         const entry_id_suffix = `_id_${position()}`;
 
         return m('div.card.u-marginbottom-30', [
-            m(`div.fontsize-larger.u-marginbottom-30.slide-entry[id="position${entry_id_suffix}"]`, `Posição #${position()}`),
+            m(`div.fontsize-larger.u-marginbottom-30.slide-entry[id="position${entry_id_suffix}"]`, `Project #${position()}`),
             m('div.w-form', [
                 m('div', [
                     m('div.fontsize-base',
-                        m('span.fontweight-semibold', 'Título:')
+                        m('span.fontweight-semibold', 'Títle:')
                     ),
                     m(`input.text-field.w-input[type="text"][id="title${entry_id_suffix}"]`, {
                         oninput: (event) => title(event.target.value),
                         value: title()
                     }),
                     m('div.fontsize-base',
-                        m('span.fontweight-semibold', 'Subtítulo:')
+                        m('span.fontweight-semibold', 'Subtitle:')
                     ),
                     m(`input.text-field.w-input[type="text"][id="subtitle${entry_id_suffix}"]`, {
                         oninput: (event) => subtitle(event.target.value),
@@ -48,7 +48,7 @@ export const AdminHomeBannersEntry = {
                         value: cta()
                     }),
                     m('div.fontsize-base',
-                        m('span.fontweight-semibold', 'Imagem:')
+                        m('span.fontweight-semibold', 'Image:')
                     ),
                     m(`input.text-field.w-input[type="text"][id="image${entry_id_suffix}"]`, {
                         oninput: (event) => image(event.target.value),

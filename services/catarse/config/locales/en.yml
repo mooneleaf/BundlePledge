@@ -16,7 +16,7 @@ en:
   days: days
   facebook_locale: en
   failure_title: 'Please fix the following errors:'
-  i_just_contributed: I just contributed to the %{name} project on @catarse
+  i_just_contributed: I just contributed to the %{name} project on BundlePledge
   'no': Not
   'yes': 'Yes'
   not_informed: uninformed
@@ -24,9 +24,8 @@ en:
   sending: Sending ...
   share_my_contributions: Check the project
   site:
-    description: The Catarse is the first and largest crowdfunding platform, or collective
-      financing, in Brazil. Come and take projects from paper!
+    description: BundlePledge is raising money for RPG projects
     keywords: crowdfunding, collective funding, project, catharsis, community, open
       source
     meta_title: " %{title} · %{company_name}"
-    title: Crowdfunding and collective financing in Brazil is not Catarse
+    title: BundlePledge - RPG Crowdfunding for bundle bargain prices

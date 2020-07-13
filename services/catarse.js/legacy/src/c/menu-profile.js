@@ -6,7 +6,7 @@ import h from '../h';
 import models from '../models';
 import { catarse } from '../api';
 
-const I18nScope = _.partial(h.i18nScope, 'shared.menus.user');
+const I18nScope = _.partial(h.i18nScope, 'shared.menus');
 
 const menuProfile = {
     oninit: function(vnode) {
@@ -68,14 +68,14 @@ const menuProfile = {
                                 m('.w-col.w-col-12',
                                     [
                                         m('.fontweight-semibold.fontsize-smaller.u-marginbottom-10',
-                                            I18n.t('contributions_history', I18nScope())
+                                            I18n.t('user.contributions_history', I18nScope())
                                         ),
                                         m('ul.w-list-unstyled.u-marginbottom-20',
                                             [
                                                 m('li.lineheight-looser',
                                                   m(`a.alt-link.fontsize-smaller[href='/${window.I18n.locale}/users/${user.id}/edit#balance']`,
                                                     m('span', [
-                                                        I18n.t('total', I18nScope()),
+                                                        I18n.t('user.total', I18nScope()),
                                                         (state.userBalance() > 0 ? m('span.fontcolor-secondary',
                                                           `R$ ${h.formatNumber(state.userBalance(), 2, 3)}`) : ''),
                                                     ])
@@ -83,39 +83,34 @@ const menuProfile = {
                                                  ),
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href='/${window.I18n.locale}/users/${user.id}/edit#contributions']`,
-                                                        I18n.t('contributions_history_nav', I18nScope())
+                                                        I18n.t('user.contributions_history_nav', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
                                                   m(`a.alt-link.fontsize-smaller[href='/${window.I18n.locale}/users/${user.id}/edit#projects']`,
-                                                    'Projetos criados'
+                                                    I18n.t('user.projects_created', I18nScope()),
                                                    )
                                                  )
                                             ]
                                         ),
                                         m('.fontweight-semibold.fontsize-smaller.u-marginbottom-10',
-                                            'Configurações'
+                                            I18n.t('user.settings', I18nScope()),
                                         ),
                                         m('ul.w-list-unstyled.u-marginbottom-20',
                                             [
                                                 m('li.lineheight-looser',
-                                                  m('a.alt-link.fontsize-smaller[href=\'/connect-facebook/\']',
-                                                    'Encontre amigos'
-                                                   ),
-                                                 ),
-                                                m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href='/${window.I18n.locale}/users/${user.id}/edit#about_me']`,
-                                                        'Perfil público'
+                                                        I18n.t('user.about', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href='/${window.I18n.locale}/users/${user.id}/edit#notifications']`,
-                                                        'Notificações'
+                                                        I18n.t('user.notifications', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href='/${window.I18n.locale}/users/${user.id}/edit#settings']`,
-                                                        'Dados cadastrais'
+                                                        I18n.t('user.access_address', I18nScope())
                                                     )
                                                 )
                                             ]
@@ -128,42 +123,42 @@ const menuProfile = {
                                             [
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href=\'/${window.I18n.locale}/new-admin#/home-banners\']`,
-                                                        'Banners'
+                                                        I18n.t('admin.banners', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href=\'/${window.I18n.locale}/new-admin#/users\']`,
-                                                        'Usuários'
+                                                        I18n.t('admin.users', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href=\'/${window.I18n.locale}/new-admin\']`,
-                                                        'Apoios'
+                                                        I18n.t('admin.support', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
                                                   m(`a.alt-link.fontsize-smaller[href=\'/${window.I18n.locale}/new-admin#/balance-transfers\']`,
-                                                    'Saques'
+                                                      I18n.t('admin.withdrawals', I18nScope())
                                                    )
                                                  ),
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href=\'/${window.I18n.locale}/admin/financials\']`,
-                                                        'Rel. Financeiros'
+                                                        I18n.t('admin.financial_reports', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
                                                     m(`a.alt-link.fontsize-smaller[href=\'/${window.I18n.locale}/new-admin#/projects\']`,
-                                                        'Admin projetos'
+                                                        I18n.t('admin.admin_projects', I18nScope())
                                                     )
                                                 ),
                                                 m('li.lineheight-looser',
                                                   m(`a.alt-link.fontsize-smaller[href=\'/${window.I18n.locale}/new-admin#/subscriptions\']`,
-                                                    'Admin assinaturas'
+                                                      I18n.t('admin.admin_subscriptions', I18nScope())
                                                    )
                                                  ),
                                                 m('li.lineheight-looser',
                                                   m(`a.alt-link.fontsize-smaller[href=\'/${window.I18n.locale}/new-admin#/notifications\']`,
-                                                    'Admin notificações'
+                                                      I18n.t('admin.admin_notifications', I18nScope())
                                                    )
                                                 ),
                                                 m('li.lineheight-looser',

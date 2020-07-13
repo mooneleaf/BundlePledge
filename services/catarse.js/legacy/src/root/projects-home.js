@@ -32,6 +32,11 @@ const projectsHome = {
             vm,
             hasFBAuth
         };
+        // const vm = homeVM();
+        // vnode.state = {
+        //     vm,
+        //     false
+        // };
     },
     view: function({state}) {
         /** @type {HomeVM} */
@@ -49,9 +54,7 @@ const projectsHome = {
                 wrapperClass: 'hero-full hero-full-slide',
                 sliderTime: 10000
             }),
-            m(projectsDisplay),
-            (!state.hasFBAuth ? m(UnsignedFriendFacebookConnect, { largeBg: true }) : ''),
-            m(blogBanner)
+            m(projectsDisplay)
         ]);
     }
 };

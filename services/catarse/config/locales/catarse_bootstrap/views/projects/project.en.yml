@@ -5,7 +5,7 @@ en:
         SubscriptionReportForProjectOwner: 'Subscribers Base'
         SubscriptionMonthlyReportForProjectOwner: 'Confirmed Payments'
     home:
-      header_html: Crowdfunding and collective financing in Brazil is not Catarse
+      header_html: BundlePledge - RPG Crowdfunding for bundle bargain prices
       row_title: Most Popular
       banners:
         2:

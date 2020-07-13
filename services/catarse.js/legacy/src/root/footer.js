@@ -25,7 +25,7 @@ const footer = {
                                                 m('a.link-footer[href=\'http://crowdfunding.catarse.me/paratodos?ref=ctrse_footer\']',
                                                     I18n.t('links.how_it_works', I18nScope())
                                                 ),
-                                                m('a.link-footer[href=\'http://blog.catarse.me\']',
+                                                m('a.link-footer[href=\'http://beyondthebundle.com\']',
                                                     I18n.t('links.blog', I18nScope())
                                                 ),
                                                 m(`a.link-footer[href=\'${window.I18n.locale}/team?ref=ctrse_footer\']`,
@@ -88,7 +88,7 @@ const footer = {
                                                     m('a.link-footer[href=\'http://suporte.catarse.me/hc/pt-br/requests/new\'][target="_BLANK"]',
                                                         I18n.t('links.contact', I18nScope())
                                                      ),
-                                                m('a.link-footer[href=\'http://blog.catarse.me/category/atualizacoes\']',
+                                                m('a.link-footer[href=\'http://beyondthebundle.com/category/atualizacoes\']',
                                                   ' Atualizações 🌟'
                                                  ),
                                                 m('a.link-footer[href=\'https://www.ofinanciamentocoletivo.com.br/?ref=ctrse_footer\']',
@@ -137,7 +137,7 @@ const footer = {
                                                 m(`a.link-footer[href=\'/${window.I18n.locale}/explore?ref=ctrse_footer\']`,
                                                     ' Explore projetos'
                                                 ),
-                                                m('a.w-hidden-main.w-hidden-medium.w-hidden-small.link-footer[href=\'http://blog.catarse.me?ref=ctrse_footer\']',
+                                                m('a.w-hidden-main.w-hidden-medium.w-hidden-small.link-footer[href=\'http://beyondthebundle.com?ref=ctrse_footer\']',
                                                     ' Blog'
                                                 ),
                                                 m('a.w-hidden-main.w-hidden-medium.w-hidden-small.link-footer[href=\'http://suporte.catarse.me/hc/pt-br/requests/new\']',

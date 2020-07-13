@@ -44,7 +44,7 @@ const AdminHomeBanners = {
                             isUpdating ?
                                 h.loader()
                                 :
-                                m('button.btn.btn-large[href=""]', { onclick: () => vm.updateBanners(banners()) }, 'Salvar')
+                                m('button.btn.btn-large[href=""]', { onclick: () => vm.updateBanners(banners()) }, 'Save')
                         ),
                         m('div.w-col.w-col-4')
                     ])
