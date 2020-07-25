@@ -6,7 +6,7 @@ const platformToken = platformTokenMeta ? platformTokenMeta.getAttribute('conten
 const commonRequestHeader = { 'Platform-Code': platformToken };
 
 const apiInit = (api, apiMeta, authUrl, globalHeader) => {
-    api.init(apiMeta.getAttribute('content'), { method: 'GET', url: authUrl }, globalHeader);
+    api.init(/* apiMeta.getAttribute('content') */ '/v1', { method: 'GET', url: authUrl }, globalHeader);
 };
 
 const catarse = new Postgrest(m);
@@ -46,15 +46,4 @@ const commonProxy = new Postgrest(m);
 const commonProxyApiMeta = document.querySelector('[name="common-proxy-api-host"]');
 apiInit(commonProxy, commonProxyApiMeta, '/api_token/common_proxy', commonRequestHeader);
 
-
-export {
-    catarse, 
-    catarseMoments, 
-    commonPayment, 
-    commonProject, 
-    commonAnalytics, 
-    commonNotification, 
-    commonRecommender, 
-    commonCommunity, 
-    commonProxy 
-};
+export { catarse, catarseMoments, commonPayment, commonProject, commonAnalytics, commonNotification, commonRecommender, commonCommunity, commonProxy };

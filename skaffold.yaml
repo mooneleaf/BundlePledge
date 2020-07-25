@@ -36,7 +36,7 @@ profiles:
       - image: catarse-deploy/common-proxy
         context: ./services/proxy/
         docker:
-          dockerfile: ./Dockerfile 
+          dockerfile: ./Dockerfile.web
       - image: catarse-deploy/common-api
         context: ./services/common-api/
         docker:
