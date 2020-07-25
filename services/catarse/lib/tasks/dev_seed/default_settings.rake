@@ -82,20 +82,20 @@ namespace :dev_seed do
       contato_url: 'http://localhost:3000/',
       api_moments_host: 'http://catarse_moment_service_api:3000',
       api_host: 'http://catarse_api:3000',
-      front_api_moments_host: 'http://localhost:3010',
-      front_api_host: 'http://localhost:3008'
+      front_api_moments_host: '',
+      front_api_host: ''
       #api_moments_host: 'http://localhost:3008'
     }
 
     common = {
 			jwt_secret: 'bUH75katNm6Yj0iPSchcgUuTwYAzZr7C',
-      front_common_notification_service_api: 'http://localhost:3007',
-			front_common_recommender_service_api: 'http://localhost:3009',
-      front_common_community_service_api: 'http://localhost:3003',
-      front_common_project_service_api: 'http://localhost:3002',
-      front_common_analytics_service_api: 'http://localhost:3005',
-      front_common_payment_service_api: 'http://localhost:3001',
-			front_common_proxy_service_api: 'http://localhost:3013',
+      front_common_notification_service_api: '/v1',
+			front_common_recommender_service_api: '/v1',
+      front_common_community_service_api: '/v1',
+      front_common_project_service_api: '/v1',
+      front_common_analytics_service_api: '/v1',
+      front_common_payment_service_api: '/v1',
+			front_common_proxy_service_api: '/v1',
 
       common_notification_service_api: 'http://notification_service_api:30000',
 			common_recommender_service_api: 'http://recommender_service_api:3000',
@@ -103,7 +103,7 @@ namespace :dev_seed do
       common_project_service_api: 'http://project_service_api:3000',
       common_analytics_service_api: 'http://analytics_service_api:3000',
       common_payment_service_api: 'http://payment_service_api:3000',
-			common_proxy_service_api: 'http://proxy',
+			common_proxy_service_api: 'http://common-proxy',
       common_platform_token: 'a28be766-bb36-4821-82ec-768d2634d78b',
       common_platform_id: '8187a11e-6fa5-4561-a5e5-83329236fbd6',
       common_db_host: 'service-core-db',

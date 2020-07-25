@@ -3,4 +3,4 @@ resources:
   - catarse-env-configmap.yaml
   - catarse.yaml
   - catarse-js-webpack.yaml
-#  - ingress.yaml
+  - ingress.yaml
