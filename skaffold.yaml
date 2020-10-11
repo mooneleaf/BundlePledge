@@ -43,7 +43,7 @@ profiles:
           dockerfile: ./Dockerfile         
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/local-run
+        path: ops/kubernetes/kustomize/overlays/local-run
   - name: local-migrations
     build:
       artifacts:
@@ -59,7 +59,7 @@ profiles:
           dockerfile: ./Dockerfile     
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/local-migrations
+        path: ops/kubernetes/kustomize/overlays/local-migrations
   - name: local-catarse
     build:
       artifacts:
@@ -85,7 +85,7 @@ profiles:
                 
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/local-catarse
+        path: ops/kubernetes/kustomize/overlays/local-catarse
   - name: local-db-init
     build:
       artifacts:
@@ -103,7 +103,7 @@ profiles:
             dockerfile: ./Dockerfile.service_core-db
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/local-db
+        path: ops/kubernetes/kustomize/overlays/local-db
   - name: local-db
     build:
       artifacts:
@@ -121,7 +121,7 @@ profiles:
             dockerfile: ./Dockerfile.db
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/local-db
+        path: ops/kubernetes/kustomize/overlays/local-db
   - name: local-prime
     build:
       artifacts:
@@ -131,7 +131,7 @@ profiles:
             dockerfile: ./Dockerfile.service_core-db
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/local-prime
+        path: ops/kubernetes/kustomize/overlays/local-prime
   - name: local-setup
     build:
       artifacts:
@@ -144,7 +144,7 @@ profiles:
             dockerfile: ./dev.Dockerfile 
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/local-setup       
+        path: ops/kubernetes/kustomize/overlays/local-setup       
   - name: test-run
     build:
       tagPolicy:
@@ -194,7 +194,7 @@ profiles:
           dockerfile: ./Dockerfile         
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/test-run
+        path: ops/kubernetes/kustomize/overlays/test-run
   - name: test-migrations
     build:
       tagPolicy:
@@ -214,7 +214,7 @@ profiles:
           dockerfile: ./Dockerfile     
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/test-migrations
+        path: ops/kubernetes/kustomize/overlays/test-migrations
   - name: test-catarse
     build:
       artifacts:
@@ -226,7 +226,7 @@ profiles:
           dockerfile: ./Dockerfile  
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/test-catarse
+        path: ops/kubernetes/kustomize/overlays/test-catarse
   - name: test-db-init
     build:
       artifacts:
@@ -254,7 +254,7 @@ profiles:
               CATARSE_FDW_USER_PASSWORD: '{{ .CATARSE_FDW_USER_PASSWORD }}'
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/test-db
+        path: ops/kubernetes/kustomize/overlays/test-db
   - name: test-db
     build:
       artifacts:
@@ -272,7 +272,7 @@ profiles:
             dockerfile: ./Dockerfile.db
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/test-db
+        path: ops/kubernetes/kustomize/overlays/test-db
   - name: test-prime
     build:
       artifacts:
@@ -282,7 +282,7 @@ profiles:
             dockerfile: ./Dockerfile.service_core-db
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/test-prime
+        path: ops/kubernetes/kustomize/overlays/test-prime
   - name: test-setup
     build:
       artifacts:
@@ -292,7 +292,7 @@ profiles:
             dockerfile: ./Dockerfile 
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/test-setup         
+        path: ops/kubernetes/kustomize/overlays/test-setup         
 
   - name: linode-test-run
     build:
@@ -339,7 +339,7 @@ profiles:
           dockerfile: ./Dockerfile         
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/linode-test-run
+        path: ops/kubernetes/kustomize/overlays/linode-test-run
   - name: linode-test-migrations
     build:
       artifacts:
@@ -353,7 +353,7 @@ profiles:
           dockerfile: ./Dockerfile     
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/linode-test-migrations
+        path: ops/kubernetes/kustomize/overlays/linode-test-migrations
   - name: linode-test-catarse
     build:
       artifacts:
@@ -363,7 +363,7 @@ profiles:
           dockerfile: ./Dockerfile  
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/linode-test-catarse
+        path: ops/kubernetes/kustomize/overlays/linode-test-catarse
   - name: linode-test-db-init
     build:
       artifacts:
@@ -391,7 +391,7 @@ profiles:
               CATARSE_FDW_USER_PASSWORD: '{{ .CATARSE_FDW_USER_PASSWORD }}'
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/linode-test-db
+        path: ops/kubernetes/kustomize/overlays/linode-test-db
   - name: linode-test-db
     build:
       artifacts:
@@ -409,7 +409,7 @@ profiles:
             dockerfile: ./Dockerfile.db
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/linode-test-db
+        path: ops/kubernetes/kustomize/overlays/linode-test-db
   - name: linode-test-prime
     build:
       artifacts:
@@ -419,7 +419,7 @@ profiles:
             dockerfile: ./Dockerfile.service_core-db
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/linode-test-prime
+        path: ops/kubernetes/kustomize/overlays/linode-test-prime
   - name: linode-test-setup
     build:
       artifacts:
@@ -431,4 +431,4 @@ profiles:
             dockerfile: ./Dockerfile 
     deploy:
       kustomize:
-        path: infrastructure/kustomize/overlays/linode-test-setup         
+        path: ops/kubernetes/kustomize/overlays/linode-test-setup         
