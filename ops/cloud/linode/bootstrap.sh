@@ -2,9 +2,7 @@
 set -eo pipefail
 
 # Required env vars: LETSENCRYPT_EMAIL, CLOUDFLARE_EMAIL, CLOUDFLARE_API_KEY, CLOUDFLARE_ACCOUNT_ID
-sops --decrypt .enc.env > .env
-sops --decrypt .enc.env > .env
-set -o allexport; source .env; source ../cloudflare/.env; set +o allexport
+set -o allexport; source <(sops --decrypt .enc.env); source <(sops --decrypt ../cloudflare/.enc.env); set +o allexport
 
 # Get and apply kubeconfig
 terraform output kubeconfig | base64 -d > kubeconfig
@@ -37,9 +35,9 @@ kubectl create ns helloworld &> /dev/null || true
 kubectl -n helloworld create deployment web --image=gcr.io/google-samples/hello-app:1.0  &> /dev/null || true
 kubectl -n helloworld expose deployment web --type=NodePort --port=8080 &> /dev/null || true
 kubectl apply -f ingress.yaml
-bash -c 'external_ip=""; while [ -z $external_ip ]; do echo "Waiting for end point..."; external_ip=$(kubectl -n helloworld get ing example-ingress --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}"); [ -z "$external_ip" ] && sleep 2; done; echo "End point ready-" && echo $external_ip; export endpoint=$external_ip'
+bash -c 'external_ip=""; while [ -z $external_ip ]; do echo "Waiting for end point..."; external_ip=$(kubectl -n helloworld get ing example-ingress --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}"); [ -z "$external_ip" ] && sleep 2; done; echo "End point ready-" && echo $external_ip;'
 cd ../../cloudflare
-terraform plan -var=ingress-ip=${endpoint} --out plan
+terraform plan -var=ingress-ip=$(kubectl -n helloworld get ing example-ingress --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}") --out plan
 terraform apply plan
 cd ../linode
 
