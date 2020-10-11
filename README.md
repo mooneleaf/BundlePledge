@@ -27,6 +27,71 @@ $ docker-compose exec catarse rake common:generate_fdw # generate forward schema
 $ docker-compose exec catarse rake db:migrate # run again and should finish migrations
 ```
 
+# Provisioning
+
+You will need the following tools installed:
+ - kubectl
+ - terraform
+ - helm 3.x
+ - AWS CLI w/ default credentials configured for the account you want to deploy to
+
+## Bootstrap terraform
+
+(This only ever needs to be done once) Inside `/ops/tools/bootstrap` run the following commands:
+
+```
+terraform init
+terraform plan --out plan
+terraform apply plan
+```
+
+## Start Linode k8s
+
+Inside `/ops/cloud/linode` run the following commands:
+
+```
+./plan.sh
+# if everything looks good.... (all green text, no red text)
+./apply.sh
+```
+
+Once finished, install k8s dependencies and connect cloudflare DNS:
+
+```
+./bootstrap.sh
+```
+
+Cluster is now ready to install catarse
+
+## Start AWS k8s (deprecated because of cost)
+
+Inside `/ops/cloud/aws/eksctl` run the following commands:
+
+```
+./build.sh
+```
+
+This will take some time. After it is done you can check if you can connect to the cluster:
+
+```
+kubectl cluster-info
+```
+
+To login, you'll need a token. Generate one:
+
+```
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep service-controller-token | awk '{print $1}')
+```
+
+To log into the dashboard, you need to create a local proxy:
+
+```
+kubectl proxy
+```
+
+While the proxy is running, visist http://127.0.0.1:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/ and enter the token retrieved earlier.
+
+
 ## Skaffold notes
 
 Start with running the base profile:
@@ -61,55 +126,3 @@ skaffold dev -p local-catarse --port-forward
 ```
 
 Catarse is now running at http://localhost:3000
-
-# Provisioning
-
-You will need the following tools installed:
- - kubectl
- - terraform
- - AWS CLI w/ default credentials configured for the account you want to deploy to
-
-
-(This only ever needs to be done once) Inside `/infrastructure/terraform/bootstrap` run the following commands:
-
-```
-terraform init
-terraform plan --out plan
-terraform apply plan
-```
-
-
-Inside `/infrastructure/terraform/ecr` run the following commands:
-
-```
-terraform init
-terraform plan --out plan
-terraform apply plan
-```
-
-Inside `/infrastructure/eksctl` run the following commands:
-
-```
-./build.sh
-```
-
-This will take some time. After it is done you can check if you can connect to the cluster:
-
-```
-kubectl cluster-info
-```
-
-To login, you'll need a token. Generate one:
-
-```
-kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep service-controller-token | awk '{print $1}')
-```
-
-To log into the dashboard, you need to create a local proxy:
-
-```
-kubectl proxy
-```
-
-While the proxy is running, visist http://127.0.0.1:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/ and enter the token retrieved earlier.
-
