@@ -7,9 +7,9 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: "30720m"
   tls:
-    - secretName: docker-registry-prod
+    - secretName: bundle-pledge-docker-tls
       hosts:
-        - docker.bundlepludge.com
+        - docker.bundlepledge.com
 
 storage: filesystem
 persistence:
