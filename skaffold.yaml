@@ -296,6 +296,8 @@ profiles:
 
   - name: linode-test-run
     build:
+      local:
+        push: true
       artifacts:
       - image: docker.bundlepledge.com/catarse-deploy/catarse-db
         context: ./services/service-core-db/
@@ -342,6 +344,8 @@ profiles:
         path: ops/kubernetes/kustomize/overlays/linode-test-run
   - name: linode-test-migrations
     build:
+      local:
+        push: true
       artifacts:
       - image: docker.bundlepledge.com/catarse-deploy/catarse
         context: ./services/catarse/
@@ -356,6 +360,8 @@ profiles:
         path: ops/kubernetes/kustomize/overlays/linode-test-migrations
   - name: linode-test-catarse
     build:
+      local:
+        push: true
       artifacts:
       - image: docker.bundlepledge.com/catarse-deploy/catarse
         context: ./services/catarse/
@@ -366,6 +372,8 @@ profiles:
         path: ops/kubernetes/kustomize/overlays/linode-test-catarse
   - name: linode-test-db-init
     build:
+      local:
+        push: true
       artifacts:
         - image: docker.bundlepledge.com/catarse-deploy/catarse-db
           context: ./services/service-core-db/
@@ -394,6 +402,8 @@ profiles:
         path: ops/kubernetes/kustomize/overlays/linode-test-db
   - name: linode-test-db
     build:
+      local:
+        push: true
       artifacts:
         - image: docker.bundlepledge.com/catarse-deploy/catarse-db
           context: ./services/service-core-db/
@@ -412,6 +422,8 @@ profiles:
         path: ops/kubernetes/kustomize/overlays/linode-test-db
   - name: linode-test-prime
     build:
+      local:
+        push: true
       artifacts:
         - image: docker.bundlepledge.com/catarse-deploy/core-db
           context: ./services/service-core-db/
@@ -422,6 +434,8 @@ profiles:
         path: ops/kubernetes/kustomize/overlays/linode-test-prime
   - name: linode-test-setup
     build:
+      local:
+        push: true
       artifacts:
         - image: docker.bundlepledge.com/catarse-deploy/catarse
           context: ./services/catarse/
