@@ -266,6 +266,8 @@ pt:
           attributes:
             rewards:
               at_least_one: 'Deve haver pelo menos uma recompensa'
+            city_id:
+              blank: Local do projeto não pode ficar em branco
             city:
               blank: Local do projeto não pode ficar em branco
             video_url:
@@ -409,6 +411,8 @@ pt:
               blank: "Cidade não pode ficar em branco"
             address_state:
               blank: "Estado não pode ficar em branco"
+            state_id:
+              blank: "Estado não pode ficar em branco"
             address_neighbourhood:
               blank: "Bairro não pode ficar em branco"
             address_zip_code:
@@ -475,6 +479,7 @@ pt:
     contribution_value: Valor do apoio (bruto)
     service_fee: Taxa do Catarse
     payment_method_fee: Taxa do meio de pagamento
+    antifraud_cost: Taxa do serviço de antifraude
     contribution_value_net: Valor do apoio (líquido)
     user_id: ID do usuário
     user_email: Email perfil Catarse

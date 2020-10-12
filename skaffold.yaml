@@ -22,9 +22,7 @@ profiles:
       - image: catarse-deploy/catarse
         context: ./services/catarse/
         docker:
-          buildArgs:
-            NPM_AUTH: '{{ .NPM_AUTH }}'
-          dockerfile: ./dev.Dockerfile  
+          dockerfile: ./Dockerfile  
       - image: catarse-deploy/recommender-service-api
         context: ./services/catarse_recommender/
         docker:
@@ -50,9 +48,7 @@ profiles:
       - image: catarse-deploy/catarse
         context: ./services/catarse/
         docker:
-          buildArgs:
-            NPM_AUTH: '{{ .NPM_AUTH }}'
-          dockerfile: ./dev.Dockerfile        
+          dockerfile: ./Dockerfile        
       - image: catarse-deploy/migrations
         context: ./services/service-core-db/
         docker:
@@ -139,9 +135,7 @@ profiles:
           context: ./services/catarse/
           docker:
             network: 'host'
-            buildArgs:
-              NPM_AUTH: '{{ .NPM_AUTH }}'
-            dockerfile: ./dev.Dockerfile 
+            dockerfile: ./Dockerfile 
     deploy:
       kustomize:
         path: ops/kubernetes/kustomize/overlays/local-setup       
@@ -205,8 +199,6 @@ profiles:
       - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/catarse
         context: ./services/catarse/
         docker:
-          buildArgs:
-            NPM_AUTH: '{{ .NPM_AUTH }}'
           dockerfile: ./Dockerfile        
       - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/migrations
         context: ./services/service-core-db/
@@ -221,8 +213,6 @@ profiles:
       - image: 892910702142.dkr.ecr.us-east-1.amazonaws.com/catarse-deploy/catarse
         context: ./services/catarse/
         docker:
-          buildArgs:
-            NPM_AUTH: '{{ .NPM_AUTH }}'
           dockerfile: ./Dockerfile  
     deploy:
       kustomize:
@@ -440,8 +430,6 @@ profiles:
         - image: docker.bundlepledge.com/catarse-deploy/catarse
           context: ./services/catarse/
           docker:
-            buildArgs:
-              NPM_AUTH: '{{ .NPM_AUTH }}'
             dockerfile: ./Dockerfile 
     deploy:
       kustomize:

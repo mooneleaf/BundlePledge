@@ -1,4 +1,27 @@
-version: '3'
+version: "3.7"
+
+x-ctrse-service: &ctrse-service
+    build:
+      context: ./services/catarse
+      dockerfile: dev.Dockerfile
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://catarse:example@localhostcatarse:5432/catarse_db
+      REDIS_URL: redis://catarse_redis:6379
+    volumes:
+      # mount volumes for development on catarse / catarse.js
+      - ./services/catarse/:/usr/app
+     # - ./services/catarse.js/:/usr/app/node_modules/catarse.js
+    links:
+      - service_core_db
+      - "catarse_db:localhostcatarse"
+      - "catarse_redis:catarse_redis"
+    depends_on:
+      - catarse_db
+      - catarse_redis
+    networks:
+      - cluster
+
 volumes:
   postgres-data:
     driver: local
@@ -443,9 +466,7 @@ services:
   #### TEST ENV services
 
   catarse_specs:
-    build:
-      context: ./services/catarse
-      dockerfile: dev.Dockerfile
+    <<: *ctrse-service
     environment:
       RAILS_ENV: test
       DATABASE_URL: postgres://catarse:example@localhostcatarse:5432/catarse_db_test
