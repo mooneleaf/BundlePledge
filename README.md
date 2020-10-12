@@ -63,6 +63,18 @@ Once finished, install k8s dependencies and connect cloudflare DNS:
 
 Cluster is now ready to install catarse
 
+Go back to root of repo:
+
+```
+cd ../..
+```
+
+Run catarse install script:
+
+```
+./scripts/linode_test_bootstrap.sh
+```
+
 ## Start AWS k8s (deprecated because of cost)
 
 Inside `/ops/cloud/aws/eksctl` run the following commands:
@@ -90,39 +102,3 @@ kubectl proxy
 ```
 
 While the proxy is running, visist http://127.0.0.1:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/ and enter the token retrieved earlier.
-
-
-## Skaffold notes
-
-Start with running the base profile:
-```
-skaffold run -p local-run
-skaffold run -p local-db-init
-```
-
-Start the migration job:
-```
-skaffold run -p local-migrations
-```
-
-Now seed the DB:
-```
-skaffold run -p local-prime
-```
-
-Next load default/demo settings
-```
-skaffold run -p local-setup
-```
-
-Wait for migrations job to re-run and be succesful. To check the status of the migration run 
-```
-kubectl logs job/catarse-migrations
-```.
-
-Run catarse: 
-```
-skaffold dev -p local-catarse --port-forward
-```
-
-Catarse is now running at http://localhost:3000
