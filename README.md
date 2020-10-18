@@ -75,6 +75,14 @@ Run catarse install script:
 ./scripts/linode_test_bootstrap.sh
 ```
 
+To delete everything from Linode, go to `ops/cloud/linode` and run:
+
+```
+./destroy.sh
+```
+
+Confirm that you want want to delete the cluster.
+
 ## Start AWS k8s (deprecated because of cost)
 
 Inside `/ops/cloud/aws/eksctl` run the following commands:
