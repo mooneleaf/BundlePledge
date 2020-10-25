@@ -134,7 +134,6 @@ profiles:
         - image: catarse-deploy/catarse
           context: ./services/catarse/
           docker:
-            network: 'host'
             dockerfile: ./Dockerfile 
     deploy:
       kustomize:
