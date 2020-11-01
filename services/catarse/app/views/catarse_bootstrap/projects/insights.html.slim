@@ -20,5 +20,5 @@
 
 - content_for :application_js do
   = javascript_include_tag "//apis.google.com/js/client.js", "api/application"
-  = javascript_include_tag 'api/catarse'
-
+  - if Rails.env.production?
+    = javascript_include_tag 'api/catarse'

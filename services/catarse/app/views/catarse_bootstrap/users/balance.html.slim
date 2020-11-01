@@ -1,11 +1,11 @@
 - content_for :title, "Saldo"
 - content_for :application_js do
   = javascript_include_tag 'api/application'
-  = javascript_include_tag 'api/catarse' 
+  - if Rails.env.production?
+    = javascript_include_tag 'api/catarse' 
 
 = render 'shared/header_big'
 
 #user-balance-root data-mithril="UsersBalance" data-parameters={'user_id': resource.id}.to_json
 
 = render 'shared/footer'
-

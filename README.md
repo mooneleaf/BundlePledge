@@ -27,6 +27,45 @@ $ docker-compose exec catarse rake common:generate_fdw # generate forward schema
 $ docker-compose exec catarse rake db:migrate # run again and should finish migrations
 ```
 
+# Local KinD/MicroK8s cluster
+
+## KinD
+
+### Prereqs
+
+ - Docker https://docs.docker.com/get-docker/
+ - KinD https://kind.sigs.k8s.io/
+
+KinD stand for Kubernetes in Docker and is the easiest way to get started. Every cluster created in KinD is ephemeral. Rebooting of your machine will break the cluster and require it to be re-created. The scripts/local_kind_bootstrap.sh script will spin up a cluster.
+
+## MicroK8s
+
+Setting up catarse on a MicroK8s cluster is possible as well. The cluster will stick around and is re-usable across system restarts. However there is more work involved to get setup.
+
+The following add-ons must be installed:
+ - `microk8s.enable dns`
+ - `microk8s.enable storage`
+ - `microk8s.enable ingress`
+ - `microk8s.enable registry:size=40Gi`
+
+If necessary, edit the node annoations to add ingress.
+
+Follow the instructions here https://microk8s.io/docs/registry-built-in to activate the internal registry
+
+Use the scripts/local_mircok8s_bootstrap.sh script
+
+## Catarse.js frontend
+
+When run in local development mode, the catarse.js webpack server needs to be started locally.
+
+In a separate terminal:
+
+```
+cd services/catarse.js
+yarn
+yarn build:dev
+```
+
 # Provisioning
 
 You will need the following tools installed:

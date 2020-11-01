@@ -1,8 +1,5 @@
 apiVersion: skaffold/v1
 kind: Config
-build:
-  local:
-    push: true
 profiles:
   - name: local-run
     build:
@@ -62,25 +59,7 @@ profiles:
         - image: catarse-deploy/catarse
           context: ./services/catarse/
           docker:
-            dockerfile: ./Dockerfile  
-        - image: catarse-local/webpack-dev-server
-          context: ./services/catarse.js
-          docker:
-            dockerfile: ./local.Dockerfile
-            buildArgs:
-              NPM_AUTH: '{{ .NPM_AUTH }}'
-          sync:
-            infer:
-              - 'legacy/**'
-              - '.babelrc'
-              - '.eslintrc.js'
-              - '.flowconfig'
-              - '.jscsrc'
-              - '.jshintignore'
-              - 'package.json'
-              - 'yarn.lock'
-              - 'webpack.config.js'
-                
+            dockerfile: ./dev.Dockerfile   
     deploy:
       kustomize:
         path: ops/kubernetes/kustomize/overlays/local-catarse

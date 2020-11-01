@@ -13,7 +13,8 @@
 
 - content_for :application_js do
   = javascript_include_tag 'api/application'
-  = javascript_include_tag 'api/catarse'
+  - if Rails.env.production?
+    = javascript_include_tag 'api/catarse'
   
 - controller.referral_it!
 

@@ -36,4 +36,3 @@ spec:
             backend:
               serviceName: "common-proxy"
               servicePort: 3013
-  
