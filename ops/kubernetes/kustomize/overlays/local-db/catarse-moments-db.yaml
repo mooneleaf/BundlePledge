@@ -22,7 +22,7 @@ spec:
               value: catarse_moments
             - name: POSTGRES_USER
               value: postgres
-            - name: PGPASSWORD
+            - name: POSTGRES_PASSWORD
               value: example
           image: catarse-deploy/moments-db
           name: catarse-moments-db
@@ -52,4 +52,3 @@ spec:
     io.kompose.service: catarse-moments-db
 status:
   loadBalancer: {}
-  

@@ -29,7 +29,7 @@ spec:
               value: service_core
             - name: POSTGRES_USER
               value: postgres
-            - name: PGPASSWORD
+            - name: POSTGRES_PASSWORD
               value: example
           image: catarse-deploy/core-db
           name: service-core-db

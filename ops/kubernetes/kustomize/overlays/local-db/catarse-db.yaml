@@ -29,7 +29,7 @@ spec:
               value: catarse_db
             - name: POSTGRES_USER
               value: catarse
-            - name: PGPASSWORD
+            - name: POSTGRES_PASSWORD
               value: example
           image: catarse-deploy/catarse-db
           name: catarse-db
@@ -59,4 +59,3 @@ spec:
     io.kompose.service: catarse-db
 status:
   loadBalancer: {}
-  
